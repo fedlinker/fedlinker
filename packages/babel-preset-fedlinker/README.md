@@ -47,13 +47,14 @@ module.exports = {
   - `"all"`: Use [all proposal plugins](https://babeljs.io/docs/en/plugins#experimental).
   - `Array(proposal-name)`: Can be an array contains [propposal names](https://babeljs.io/docs/en/plugins#experimental), i.e `['export-default-from', 'export-namespace-from']`.
 - **`injectPolyfills`**: Auto inject [polyfills](https://reactjs.org/docs/javascript-environment-requirements.html). If you want auto inject polyfills, you muse specify `entry` or `entries` options.
+- **`fetchPolyfill`**: Auto inject [fetch polyfill](https://github.com/github/fetch) and [Abortcontroller polyfill](https://github.com/mo/abortcontroller-polyfill), defualt `false`.
 
 The flowing options are [babel-plugin-entry](https://github.com/fedlinker/fedlinker/packages/babel-plugin-entry/README.md)'s options：
 
 - **`entry`**: Single entry filename. Can be a relative or absolue path.
 - **`entries`**: Multiple entry filenames. Cans use with `entry` option.
 - **`polyfills`**: Polyfills array. Item in `polyfills` can be a(n) module name, relative path or absolute path.
-- **`context`**: Same as Webpack `context`, default is `process.cwd()`. All relative path in babel-plugin-entry options will be concated with `context`. When you changed Webpack context, you should change this option with same value.
+- **`context`**: Same as Webpack `context`, default is `process.cwd()`. All relative path in options will be concated with `context`. When you changed Webpack context, you should change this option with same value.
 
 ## License
 
