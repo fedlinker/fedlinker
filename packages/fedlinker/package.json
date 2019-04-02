@@ -1,0 +1,34 @@
+{
+  "name": "fedlinker",
+  "version": "0.0.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "description": "Tools for building React project with zero configuration as possible.",
+  "keywords": [
+    "fedlinker",
+    "scripts",
+    "CLI",
+    "configuration",
+    "build",
+    "development",
+    "library",
+    "doc",
+    "document"
+  ],
+  "author": "李蔚生",
+  "homepage": "https://fedlinker.com/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fedlinker/fedlinker.git"
+  },
+  "bugs": {
+    "url": "https://github.com/fedlinker/fedlinker/issues"
+  },
+  "license": "MIT",
+  "main": "lib/index.js",
+  "files": [
+    "lib"
+  ],
+  "devDependencies": {}
+}
