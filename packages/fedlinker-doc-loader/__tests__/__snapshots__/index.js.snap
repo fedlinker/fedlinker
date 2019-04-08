@@ -1,0 +1,380 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`fedlinker-doc-loader should parse correctly 1`] = `
+"import React from \\"react\\";
+import 'module-name';
+import FEDLINKER_DOC_LOADER_VARIABLE_1 from 'module-name';
+import * as FEDLINKER_DOC_LOADER_VARIABLE_2 from 'module-name';
+import { export1 as FEDLINKER_DOC_LOADER_VARIABLE_3, export2 as FEDLINKER_DOC_LOADER_VARIABLE_4 } from 'module-name';
+import { Component as FEDLINKER_DOC_LOADER_VARIABLE_5 } from 'react';
+
+const FEDLINKER_DOC_LOADER_EXAMPLE_1 = ((defaultName, namespace, export1, export2Alias) => {
+  return () => null;
+})(FEDLINKER_DOC_LOADER_VARIABLE_1, FEDLINKER_DOC_LOADER_VARIABLE_2, FEDLINKER_DOC_LOADER_VARIABLE_3, FEDLINKER_DOC_LOADER_VARIABLE_4);
+
+const FEDLINKER_DOC_LOADER_EXAMPLE_2 = (Component => {
+  class Button extends Component {
+    render() {
+      return <button>Button</button>;
+    }
+
+  }
+
+  return Button;
+})(FEDLINKER_DOC_LOADER_VARIABLE_5);
+
+export default (<><article>
+  <h1 id=\\"document\\">
+    {\`Document\`}
+    <a className=\\"anchor\\" href=\\"#document\\">
+      {\`#\`}
+    </a>
+  </h1>
+  <p>
+    {\`Paragraph.\`}
+  </p>
+  <h2 id=\\"examples\\">
+    {\`Examples\`}
+    <a className=\\"anchor\\" href=\\"#examples\\">
+      {\`#\`}
+    </a>
+  </h2>
+  <h3 id=\\"basic\\">
+    {\`Basic\`}
+    <a className=\\"anchor\\" href=\\"#basic\\">
+      {\`#\`}
+    </a>
+  </h3>
+  <pre>
+    <code>
+      {\`Code\`}
+      <span className=\\"token punctuation\\">
+        {\`.\`}
+      </span>
+    </code>
+  </pre>
+  <h3 id=\\"jsx\\">
+    {\`JSX\`}
+    <a className=\\"anchor\\" href=\\"#jsx\\">
+      {\`#\`}
+    </a>
+  </h3>
+  <pre>
+    <code className=\\"language-jsx\\">
+      <span className=\\"token keyword\\">
+        {\`import\`}
+      </span>
+      {\`React\`}
+      <span className=\\"token keyword\\">
+        {\`from\`}
+      </span>
+      <span className=\\"token string\\">
+        {\`'react'\`}
+      </span>
+      <span className=\\"token punctuation\\">
+        {\`;\`}
+      </span>
+      <span className=\\"token keyword\\">
+        {\`export\`}
+      </span>
+      <span className=\\"token keyword\\">
+        {\`default\`}
+      </span>
+      <span className=\\"token punctuation\\">
+        {\`(\`}
+      </span>
+      <span className=\\"token punctuation\\">
+        {\`)\`}
+      </span>
+      <span className=\\"token operator\\">
+        {\`=\`}
+      </span>
+      <span className=\\"token operator\\">
+        {\`>\`}
+      </span>
+      <span className=\\"token tag\\">
+        <span className=\\"token tag\\">
+          <span className=\\"token punctuation\\">
+            {\`<\`}
+          </span>
+          {\`button\`}
+        </span>
+        <span className=\\"token punctuation\\">
+          {\`>\`}
+        </span>
+      </span>
+      {\`Button\`}
+      <span className=\\"token tag\\">
+        <span className=\\"token tag\\">
+          <span className=\\"token punctuation\\">
+            {\`</\`}
+          </span>
+          {\`button\`}
+        </span>
+        <span className=\\"token punctuation\\">
+          {\`>\`}
+        </span>
+      </span>
+      <span className=\\"token punctuation\\">
+        {\`;\`}
+      </span>
+    </code>
+  </pre>
+  <h3 id=\\"在线示例\\">
+    {\`在线示例\`}
+    <a className=\\"anchor\\" href=\\"#在线示例\\">
+      {\`#\`}
+    </a>
+  </h3>
+  <h4 id=\\"imports\\">
+    {\`Imports\`}
+    <a className=\\"anchor\\" href=\\"#imports\\">
+      {\`#\`}
+    </a>
+  </h4>
+  <div className=\\"example\\">
+    <FEDLINKER_DOC_LOADER_EXAMPLE_1 />
+  </div>
+  <pre>
+    <code className=\\"language-js\\">
+      <span className=\\"token keyword\\">
+        {\`import\`}
+      </span>
+      <span className=\\"token string\\">
+        {\`'module-name'\`}
+      </span>
+      <span className=\\"token punctuation\\">
+        {\`;\`}
+      </span>
+      <span className=\\"token keyword\\">
+        {\`import\`}
+      </span>
+      {\`defaultName\`}
+      <span className=\\"token keyword\\">
+        {\`from\`}
+      </span>
+      <span className=\\"token string\\">
+        {\`'module-name'\`}
+      </span>
+      <span className=\\"token punctuation\\">
+        {\`;\`}
+      </span>
+      <span className=\\"token keyword\\">
+        {\`import\`}
+      </span>
+      <span className=\\"token operator\\">
+        {\`*\`}
+      </span>
+      <span className=\\"token keyword\\">
+        {\`as\`}
+      </span>
+      {\`namespace\`}
+      <span className=\\"token keyword\\">
+        {\`from\`}
+      </span>
+      <span className=\\"token string\\">
+        {\`'module-name'\`}
+      </span>
+      <span className=\\"token punctuation\\">
+        {\`;\`}
+      </span>
+      <span className=\\"token keyword\\">
+        {\`import\`}
+      </span>
+      <span className=\\"token punctuation\\">
+        {\`{\`}
+      </span>
+      {\`export1\`}
+      <span className=\\"token punctuation\\">
+        {\`,\`}
+      </span>
+      {\`export2\`}
+      <span className=\\"token keyword\\">
+        {\`as\`}
+      </span>
+      {\`export2Alias\`}
+      <span className=\\"token punctuation\\">
+        {\`}\`}
+      </span>
+      <span className=\\"token keyword\\">
+        {\`from\`}
+      </span>
+      <span className=\\"token string\\">
+        {\`'module-name'\`}
+      </span>
+      <span className=\\"token punctuation\\">
+        {\`;\`}
+      </span>
+      <span className=\\"token keyword\\">
+        {\`export\`}
+      </span>
+      <span className=\\"token keyword\\">
+        {\`default\`}
+      </span>
+      <span className=\\"token punctuation\\">
+        {\`(\`}
+      </span>
+      <span className=\\"token punctuation\\">
+        {\`)\`}
+      </span>
+      <span className=\\"token operator\\">
+        {\`=\`}
+      </span>
+      <span className=\\"token operator\\">
+        {\`>\`}
+      </span>
+      <span className=\\"token keyword\\">
+        {\`null\`}
+      </span>
+      <span className=\\"token punctuation\\">
+        {\`;\`}
+      </span>
+    </code>
+  </pre>
+  <h4 id=\\"button\\">
+    {\`Button\`}
+    <a className=\\"anchor\\" href=\\"#button\\">
+      {\`#\`}
+    </a>
+  </h4>
+  <div className=\\"example\\">
+    <FEDLINKER_DOC_LOADER_EXAMPLE_2 />
+  </div>
+  <pre>
+    <code className=\\"language-jsx\\">
+      <span className=\\"token keyword\\">
+        {\`import\`}
+      </span>
+      <span className=\\"token punctuation\\">
+        {\`{\`}
+      </span>
+      {\`Component\`}
+      <span className=\\"token punctuation\\">
+        {\`}\`}
+      </span>
+      <span className=\\"token keyword\\">
+        {\`from\`}
+      </span>
+      <span className=\\"token string\\">
+        {\`'react'\`}
+      </span>
+      <span className=\\"token punctuation\\">
+        {\`;\`}
+      </span>
+      <span className=\\"token keyword\\">
+        {\`class\`}
+      </span>
+      <span className=\\"token class-name\\">
+        {\`Button\`}
+      </span>
+      <span className=\\"token keyword\\">
+        {\`extends\`}
+      </span>
+      <span className=\\"token class-name\\">
+        {\`Component\`}
+      </span>
+      <span className=\\"token punctuation\\">
+        {\`{\`}
+      </span>
+      <span className=\\"token function\\">
+        {\`render\`}
+      </span>
+      <span className=\\"token punctuation\\">
+        {\`(\`}
+      </span>
+      <span className=\\"token punctuation\\">
+        {\`)\`}
+      </span>
+      <span className=\\"token punctuation\\">
+        {\`{\`}
+      </span>
+      <span className=\\"token keyword\\">
+        {\`return\`}
+      </span>
+      <span className=\\"token tag\\">
+        <span className=\\"token tag\\">
+          <span className=\\"token punctuation\\">
+            {\`<\`}
+          </span>
+          {\`button\`}
+        </span>
+        <span className=\\"token punctuation\\">
+          {\`>\`}
+        </span>
+      </span>
+      {\`Button\`}
+      <span className=\\"token tag\\">
+        <span className=\\"token tag\\">
+          <span className=\\"token punctuation\\">
+            {\`</\`}
+          </span>
+          {\`button\`}
+        </span>
+        <span className=\\"token punctuation\\">
+          {\`>\`}
+        </span>
+      </span>
+      <span className=\\"token punctuation\\">
+        {\`;\`}
+      </span>
+      <span className=\\"token punctuation\\">
+        {\`}\`}
+      </span>
+      <span className=\\"token punctuation\\">
+        {\`}\`}
+      </span>
+      <span className=\\"token keyword\\">
+        {\`export\`}
+      </span>
+      <span className=\\"token keyword\\">
+        {\`default\`}
+      </span>
+      {\`Button\`}
+      <span className=\\"token punctuation\\">
+        {\`;\`}
+      </span>
+    </code>
+  </pre>
+</article>
+<aside>
+  <nav>
+    <ul className=\\"toc\\">
+      <li>
+        <a href=\\"#examples\\">
+          {\`Examples\`}
+        </a>
+        <ul>
+          <li>
+            <a href=\\"#basic\\">
+              {\`Basic\`}
+            </a>
+          </li>
+          <li>
+            <a href=\\"#jsx\\">
+              {\`JSX\`}
+            </a>
+          </li>
+          <li>
+            <a href=\\"#%E5%9C%A8%E7%BA%BF%E7%A4%BA%E4%BE%8B\\">
+              {\`在线示例\`}
+            </a>
+            <ul>
+              <li>
+                <a href=\\"#imports\\">
+                  {\`Imports\`}
+                </a>
+              </li>
+              <li>
+                <a href=\\"#button\\">
+                  {\`Button\`}
+                </a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+</aside>
+</>)"
+`;
