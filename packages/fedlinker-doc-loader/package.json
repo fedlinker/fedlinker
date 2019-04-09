@@ -13,8 +13,17 @@
     "fedlinker"
   ],
   "author": "李蔚生",
-  "homepage": "https://github.com/fedlinker/fedlinker/packages/fedlinker-doc-loader/README.md",
-  "license": "MIT",
+  "homepage": "https://github.com/fedlinker/fedlinker/blob/master/packages/fedlinker-doc-loader/README.md",
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/fedlinker/fedlinker/blob/master/MIT-LICENSE"
+    },
+    {
+      "type": "Anti-996",
+      "url": "https://github.com/fedlinker/fedlinker/blob/master/Anti-996-LICENSE"
+    }
+  ],
   "main": "index.js",
   "repository": {
     "type": "git",
@@ -23,12 +32,8 @@
   "bugs": {
     "url": "https://github.com/fedlinker/fedlinker/issues"
   },
-  "files": [
-    "index.js",
-    "ExampleParser.js"
-  ],
   "peerDependencies": {
-    "@babel/core": "^7.4.3"
+    "@babel/core": "^7.0.0"
   },
   "dependencies": {
     "h2x-core": "^1.1.1",
@@ -38,6 +43,6 @@
     "node-prismjs": "^0.1.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.4.3"
+    "@babel/core": "^7.0.0"
   }
 }

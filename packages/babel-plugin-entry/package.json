@@ -1,7 +1,7 @@
 {
   "name": "babel-plugin-entry",
   "version": "0.0.0",
-  "description": "Babel plugin for injecting polyfills in entry files",
+  "description": "Babel plugin for injecting polyfills into entry files",
   "keywords": [
     "babel",
     "plugin",
@@ -12,12 +12,18 @@
     "access": "public"
   },
   "author": "李蔚生",
-  "homepage": "https://github.com/fedlinker/fedlinker/packages/babel-plugin-entry/README.md",
-  "license": "MIT",
-  "main": "index.js",
-  "files": [
-    "index.js"
+  "homepage": "https://github.com/fedlinker/fedlinker/blob/master/packages/babel-plugin-entry/README.md",
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/fedlinker/fedlinker/blob/master/MIT-LICENSE"
+    },
+    {
+      "type": "Anti-996",
+      "url": "https://github.com/fedlinker/fedlinker/blob/master/Anti-996-LICENSE"
+    }
   ],
+  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/fedlinker/fedlinker.git"
@@ -26,10 +32,10 @@
     "url": "https://github.com/fedlinker/fedlinker/issues"
   },
   "peerDependencies": {
-    "@babel/core": "^7.4.0"
+    "@babel/core": "^7.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.4.0"
+    "@babel/core": "^7.0.0"
   },
   "dependencies": {
     "@babel/helper-module-imports": "^7.0.0"

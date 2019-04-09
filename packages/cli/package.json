@@ -1,10 +1,10 @@
 {
   "name": "fedlinker",
   "version": "0.0.0",
+  "description": "Tools for building React project with zero configuration as possible",
   "publishConfig": {
     "access": "public"
   },
-  "description": "Tools for building React project with zero configuration as possible.",
   "keywords": [
     "fedlinker",
     "scripts",
@@ -25,10 +25,19 @@
   "bugs": {
     "url": "https://github.com/fedlinker/fedlinker/issues"
   },
-  "license": "MIT",
-  "main": "lib/index.js",
-  "files": [
-    "lib"
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/fedlinker/fedlinker/blob/master/MIT-LICENSE"
+    },
+    {
+      "type": "Anti-996",
+      "url": "https://github.com/fedlinker/fedlinker/blob/master/Anti-996-LICENSE"
+    }
   ],
-  "devDependencies": {}
+  "main": "index.js",
+  "devDependencies": {},
+  "dependencies": {
+    "webpack-chain": "^5.2.4"
+  }
 }

@@ -1,6 +1,16 @@
 {
   "name": "root",
   "private": true,
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/fedlinker/fedlinker/blob/master/MIT-LICENSE"
+    },
+    {
+      "type": "Anti-996",
+      "url": "https://github.com/fedlinker/fedlinker/blob/master/Anti-996-LICENSE"
+    }
+  ],
   "scripts": {
     "lerna": "lerna",
     "test": "jest",

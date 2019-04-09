@@ -1,4 +1,4 @@
-# `babel-preset-fedlinker`
+# babel-preset-fedlinker
 
 Babel preset for [Fedlinker](https://fedlinker.com/).
 
@@ -56,6 +56,6 @@ The flowing options are [babel-plugin-entry](https://github.com/fedlinker/fedlin
 - **`polyfills`**: Polyfills array. Item in `polyfills` can be a(n) module name, relative path or absolute path.
 - **`context`**: Same as Webpack `context`, default is `process.cwd()`. All relative path in options will be concated with `context`. When you changed Webpack context, you should change this option with same value.
 
-## License
+## Licenses
 
-MIT.
+[MIT License](https://github.com/fedlinker/fedlinker/blob/master/MIT-LICENSE) and [Anti 996 License](https://github.com/fedlinker/fedlinker/blob/master/Anti-996-LICENSE).
