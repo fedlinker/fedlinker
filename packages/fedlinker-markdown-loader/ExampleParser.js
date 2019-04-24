@@ -1,4 +1,10 @@
-const { types, parseSync, traverse, template, transformFromAstSync } = require('@babel/core');
+const {
+  types,
+  parseSync,
+  traverse,
+  template,
+  transformFromAstSync,
+} = require('@babel/core');
 
 const VARIABLE_PREFIX = 'FEDLINKER_DOC_LOADER_VARIABLE_';
 const EXAMPLE_PREFIX = 'FEDLINKER_DOC_LOADER_EXAMPLE_';
@@ -48,19 +54,25 @@ class ExampleResolver {
           path.remove();
           hasDefaultExport = true;
         } else {
-          throw new Error(`[fedlinker-doc-loader]: only \`export default\` can be used`);
+          throw new Error(
+            `[fedlinker-doc-loader]: only \`export default\` can be used`
+          );
         }
       },
 
       Identifier(path) {
         if (commonjs.includes(path.node.name)) {
-          throw new Error(`[fedlinker-doc-loader]: can't use commonjs, use ES6 module syntax`);
+          throw new Error(
+            `[fedlinker-doc-loader]: can't use commonjs, use ES6 module syntax`
+          );
         }
       },
     });
 
     if (!hasDefaultExport) {
-      throw new Error(`[fedlinker-doc-loader]: must export defualt in examples`);
+      throw new Error(
+        `[fedlinker-doc-loader]: must export defualt in examples`
+      );
     }
 
     const exampleId = this.getExampleId();

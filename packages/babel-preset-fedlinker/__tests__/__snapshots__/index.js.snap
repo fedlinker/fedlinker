@@ -1,12 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`babel-preset-fedlinker basic development 1`] = `
+exports[`babel-preset-fedlinker basic should transform correctly in development env 1`] = `
 "import _classCallCheck from \\"@babel/runtime-corejs3/helpers/esm/classCallCheck\\";
 import _createClass from \\"@babel/runtime-corejs3/helpers/esm/createClass\\";
 import _possibleConstructorReturn from \\"@babel/runtime-corejs3/helpers/esm/possibleConstructorReturn\\";
 import _getPrototypeOf from \\"@babel/runtime-corejs3/helpers/esm/getPrototypeOf\\";
 import _inherits from \\"@babel/runtime-corejs3/helpers/esm/inherits\\";
-var _jsxFileName = \\"\\";
+var _jsxFileName = \\"/entry.jsx\\";
 import React, { Component } from 'react';
 import propTypes from 'prop-types';
 
@@ -24,13 +24,17 @@ function (_Component) {
   _createClass(Button, [{
     key: \\"render\\",
     value: function render() {
+      var _this$props = this.props,
+          disabled = _this$props.disabled,
+          children = _this$props.children;
       return React.createElement(\\"button\\", {
+        disabled: disabled,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 7
+          lineNumber: 8
         },
         __self: this
-      }, \\"Button\\");
+      }, children);
     }
   }]);
 
@@ -38,22 +42,19 @@ function (_Component) {
 }(Component);
 
 Button.propTypes = {
-  disabled: propTypes.bool
+  disabled: propTypes.bool,
+  children: propTypes.node
 };
 export default Button;"
 `;
 
-exports[`babel-preset-fedlinker basic production 1`] = `
+exports[`babel-preset-fedlinker basic should transform correctly in production env 1`] = `
 "import _classCallCheck from \\"@babel/runtime-corejs3/helpers/esm/classCallCheck\\";
 import _createClass from \\"@babel/runtime-corejs3/helpers/esm/createClass\\";
 import _possibleConstructorReturn from \\"@babel/runtime-corejs3/helpers/esm/possibleConstructorReturn\\";
 import _getPrototypeOf from \\"@babel/runtime-corejs3/helpers/esm/getPrototypeOf\\";
 import _inherits from \\"@babel/runtime-corejs3/helpers/esm/inherits\\";
 import React, { Component } from 'react';
-
-var _ref =
-/*#__PURE__*/
-React.createElement(\\"button\\", null, \\"Button\\");
 
 var Button =
 /*#__PURE__*/
@@ -69,7 +70,12 @@ function (_Component) {
   _createClass(Button, [{
     key: \\"render\\",
     value: function render() {
-      return _ref;
+      var _this$props = this.props,
+          disabled = _this$props.disabled,
+          children = _this$props.children;
+      return React.createElement(\\"button\\", {
+        disabled: disabled
+      }, children);
     }
   }]);
 
@@ -79,7 +85,7 @@ function (_Component) {
 export default Button;"
 `;
 
-exports[`babel-preset-fedlinker basic test 1`] = `
+exports[`babel-preset-fedlinker basic should transform correctly in test env 1`] = `
 "\\"use strict\\";
 
 var _interopRequireWildcard = require(\\"@babel/runtime-corejs3/helpers/interopRequireWildcard\\");
@@ -98,29 +104,35 @@ var _react = _interopRequireWildcard(require(\\"react\\"));
 
 var _propTypes = _interopRequireDefault(require(\\"prop-types\\"));
 
-var _jsxFileName = \\"\\";
+var _jsxFileName = \\"/entry.jsx\\";
 
 class Button extends _react.Component {
   render() {
+    const {
+      disabled,
+      children
+    } = this.props;
     return _react.default.createElement(\\"button\\", {
+      disabled: disabled,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 7
+        lineNumber: 8
       },
       __self: this
-    }, \\"Button\\");
+    }, children);
   }
 
 }
 
 Button.propTypes = {
-  disabled: _propTypes.default.bool
+  disabled: _propTypes.default.bool,
+  children: _propTypes.default.node
 };
 var _default = Button;
 exports.default = _default;"
 `;
 
-exports[`babel-preset-fedlinker proposals all 1`] = `
+exports[`babel-preset-fedlinker proposals all proposals 1`] = `
 "import _regeneratorRuntime from \\"@babel/runtime-corejs3/regenerator\\";
 import _Object$defineProperty from \\"@babel/runtime-corejs3/core-js-stable/object/define-property\\";
 import _concatInstanceProperty from \\"@babel/runtime-corejs3/core-js-stable/instance/concat\\";
@@ -190,7 +202,7 @@ a || (a = b); // numeric-separator
 
 var budget = 1000000000000; // optional-chaining
 
-var baz = (_obj = obj) == null ? void 0 : (_obj$foo = _obj.foo) == null ? void 0 : (_obj$foo$bar = _obj$foo.bar) == null ? void 0 : _obj$foo$bar.baz; // partial-application
+var baz = (_obj = obj) === null || _obj === void 0 ? void 0 : (_obj$foo = _obj.foo) === null || _obj$foo === void 0 ? void 0 : (_obj$foo$bar = _obj$foo.bar) === null || _obj$foo$bar === void 0 ? void 0 : _obj$foo$bar.baz; // partial-application
 
 _f = f, _x = x, function f(_argPlaceholder) {
   return _f(_argPlaceholder, _x);

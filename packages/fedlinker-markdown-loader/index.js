@@ -24,7 +24,12 @@ module.exports = function(content) {
   Promise.resolve(content)
     .then(markdown => {
       let toc;
-      const md = new MarkdownIt({ html: true, linkify: true, typographer: true, highlight });
+      const md = new MarkdownIt({
+        html: true,
+        linkify: true,
+        typographer: true,
+        highlight,
+      });
 
       md.renderer.rules.fence = function(tokens, idx, options, env, slf) {
         const token = tokens[idx];
@@ -46,7 +51,8 @@ module.exports = function(content) {
         }
 
         if (options.highlight) {
-          highlighted = options.highlight(token.content, lang) || escapeHtml(token.content);
+          highlighted =
+            options.highlight(token.content, lang) || escapeHtml(token.content);
         } else {
           highlighted = escapeHtml(token.content);
         }
@@ -63,10 +69,14 @@ module.exports = function(content) {
           else tmpAttrs[i][1] += ' ' + options.langPrefix + lang;
 
           tmpToken = { attrs: tmpAttrs };
-          return `${example}<pre><code ${slf.renderAttrs(tmpToken)}>${highlighted}</code></pre>\n`;
+          return `${example}<pre><code ${slf.renderAttrs(
+            tmpToken
+          )}>${highlighted}</code></pre>\n`;
         }
 
-        return `${example}<pre><code ${slf.renderAttrs(token)}>${highlighted}</code></pre>\n`;
+        return `${example}<pre><code ${slf.renderAttrs(
+          token
+        )}>${highlighted}</code></pre>\n`;
       };
 
       // https://github.com/medfreeman/markdown-it-toc-and-anchor

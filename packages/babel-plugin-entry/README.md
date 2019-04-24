@@ -1,6 +1,6 @@
 # babel-plugin-entry
 
-Babel plugin for injecting polyfills into entry files.
+Babel plugin for injecting polyfills into entry file(s).
 
 ## Install
 
@@ -12,32 +12,29 @@ yarn add -D babel-plugin-entry
 
 ## Usage
 
-In your babel configuration file (i.e. `.babelrc`):
+In your babel configuration file (i.e. `.babelrc.js`):
 
-```json
-{
-  "plugins": [
+```js
+const path = require('path');
+module.exports = {
+  plugins: [
     [
-      "babel-plugin-entry",
+      'babel-plugin-entry',
       {
-        "entry": "./src/index.js",
-        "entries": ["./src/home/index.js", "/absolute/path/entry.js"],
-        "polyfills": ["module-name", "./relative-path", "/absolute-path"],
-        "context": "/project-root/"
-      }
-    ]
-  ]
-}
+        // Entry file(s).
+        entry: path.join(process.cwd(), 'src/index.js'),
+        // Injected polyfills.
+        polyfills: ['module-name', '/absolute-path'],
+      },
+    ],
+  ],
+};
 ```
 
 ## Options
 
-All relative paths above will be resolved by `path.resolve()` with `context` base path.
-
-- **`entry`**: Single entry filename. Can be a relative or absolue path.
-- **`entries`**: Multiple entry filenames. Cans use with `entry` option.
-- **`polyfills`**: Polyfills array. Item in `polyfills` can be a(n) module name, relative path or absolute path.
-- **`context`**: Same as Webpack `context`, default is `process.cwd()`. All relative path in babel-plugin-entry options will be concated with `context`. When you changed Webpack context, you should change this option with same value.
+- **`entry`**: Entry file(s). **Required**. Must be an absolute path or an array contains absolute path.
+- **`polyfills`**: Injected polyfills. They can be module names and absolute paths.
 
 ## Licenses
 

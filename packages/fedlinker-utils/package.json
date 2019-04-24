@@ -1,19 +1,16 @@
 {
-  "name": "fedlinker-doc-loader",
+  "name": "fedlinker-utils",
   "version": "0.0.0",
-  "description": "Webpack markdown doc loader for Fedlinker",
+  "description": "Fedlinker utils",
   "publishConfig": {
     "access": "public"
   },
   "keywords": [
-    "webpack",
-    "markdown",
-    "doc",
-    "loader",
-    "fedlinker"
+    "Fedlinker",
+    "utils"
   ],
   "author": "李蔚生",
-  "homepage": "https://github.com/fedlinker/fedlinker/blob/master/packages/fedlinker-doc-loader/README.md",
+  "homepage": "https://github.com/fedlinker/fedlinker/blob/master/packages/fedlinker-utils/README.md",
   "licenses": [
     {
       "type": "MIT",
@@ -31,18 +28,5 @@
   },
   "bugs": {
     "url": "https://github.com/fedlinker/fedlinker/issues"
-  },
-  "peerDependencies": {
-    "@babel/core": "^7.0.0"
-  },
-  "dependencies": {
-    "h2x-core": "^1.1.1",
-    "h2x-plugin-jsx": "^1.2.0",
-    "markdown-it": "^8.4.2",
-    "markdown-it-toc-and-anchor": "^4.2.0",
-    "node-prismjs": "^0.1.2"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.0.0"
   }
 }

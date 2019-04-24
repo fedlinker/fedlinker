@@ -1,18 +1,19 @@
 {
-  "name": "babel-plugin-entry",
+  "name": "fedlinker-init",
   "version": "0.0.0",
-  "description": "Babel plugin for injecting polyfills into entry file(s)",
-  "keywords": [
-    "babel",
-    "plugin",
-    "entry",
-    "polyfill"
-  ],
+  "description": "CLI for creating a new React project",
   "publishConfig": {
     "access": "public"
   },
+  "keywords": [
+    "fedlinker",
+    "init",
+    "create",
+    "React",
+    "project"
+  ],
   "author": "李蔚生",
-  "homepage": "https://github.com/fedlinker/fedlinker/blob/master/packages/babel-plugin-entry/README.md",
+  "homepage": "https://github.com/fedlinker/fedlinker/blob/master/packages/fedlinker-init/README.md",
   "licenses": [
     {
       "type": "MIT",
@@ -24,20 +25,12 @@
     }
   ],
   "main": "index.js",
+  "bin": "bin/index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/fedlinker/fedlinker.git"
   },
   "bugs": {
     "url": "https://github.com/fedlinker/fedlinker/issues"
-  },
-  "peerDependencies": {
-    "@babel/core": "^7.0.0"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.0.0"
-  },
-  "dependencies": {
-    "@babel/helper-module-imports": "^7.0.0"
   }
 }

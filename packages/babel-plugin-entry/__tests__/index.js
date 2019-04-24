@@ -1,48 +1,83 @@
 const path = require('path');
 const babel = require('@babel/core');
 const entryPlugin = require('../index');
-
-const input = `class Foo {}`;
-
-function importDeclaration(moduleName) {
-  return `import "${moduleName}"`;
-}
+const inputCode = `class Foo {}`;
+const cwd = process.cwd();
+const filename = path.join(cwd, 'entry.js');
 
 describe('babel-plugin-entry', () => {
-  test('do nothing if no entry', () => {
-    const { code } = babel.transformSync(input, {
-      babelrc: false,
-      plugins: [[entryPlugin, { polyfills: ['module-name'] }]],
-    });
-    expect(code.trim()).toBe(input);
-  });
-
-  test('inject polyfills with custom context', () => {
-    const { code } = babel.transformSync(input, {
+  test('shoud inject polyfills correctly', () => {
+    const { code } = babel.transformSync(inputCode, {
       babelrc: false,
       plugins: [
         [
           entryPlugin,
-          {
-            entry: '/entry.js',
-            polyfills: ['module-name', './relative-path', '/absolute-path'],
-            context: '/root/',
-          },
+          { entry: filename, polyfills: ['module-name', '/root/polyfill.js'] },
         ],
       ],
-      filename: '/entry.js',
+      filename: filename,
     });
-    expect(code).toMatch(importDeclaration('module-name'));
-    expect(code).toMatch(importDeclaration(path.resolve('/root/', './relative-path')));
-    expect(code).toMatch(importDeclaration('/absolute-path'));
+    expect(code).toMatch(`import "module-name"`);
+    expect(code).toMatch(`import "/root/polyfill.js"`);
   });
 
-  test('inject polyfills with default context `process.cwd()`', () => {
-    const { code } = babel.transformSync(input, {
+  test('entry can be an array', () => {
+    const { code } = babel.transformSync(inputCode, {
       babelrc: false,
-      plugins: [[entryPlugin, { entries: ['entry.js'], polyfills: ['./relative-path'] }]],
-      filename: path.resolve(process.cwd(), 'entry.js'),
+      plugins: [
+        [entryPlugin, { entry: [filename], polyfills: ['module-name'] }],
+      ],
+      filename: filename,
     });
-    expect(code).toMatch(importDeclaration(path.resolve(process.cwd(), './relative-path')));
+    expect(code).toMatch(`import "module-name"`);
+  });
+
+  test('check entry option', () => {
+    // no entry
+    expect(() => {
+      babel.transformSync(inputCode, {
+        babelrc: false,
+        plugins: [[entryPlugin]],
+        filename,
+      });
+    }).toThrow();
+
+    // invalid values
+    [
+      '/without-file-extension',
+      './relative-path.js',
+      'module-name',
+      '',
+    ].forEach(entry => {
+      expect(() => {
+        babel.transformSync(inputCode, {
+          babelrc: false,
+          plugins: [[entryPlugin, { entry: entry }]],
+          filename,
+        });
+      }).toThrow();
+    });
+  });
+
+  test('check polyfills option', () => {
+    // polyfills is not an array
+    expect(() => {
+      babel.transformSync(inputCode, {
+        babelrc: false,
+        plugins: [[entryPlugin, { entry: filename, polyfills: false }]],
+        filename,
+      });
+    }).toThrow();
+
+    // polyfills contains invalid value
+    ['', './relative-path'].forEach(polyfill => {
+      expect(() => {
+        babel.transformSync(inputCode, {
+          babelrc: false,
+          plugins: [[entryPlugin, { entry: filename, polyfills: [polyfill] }]],
+          filename,
+        });
+      }).toThrow();
+    });
   });
 });

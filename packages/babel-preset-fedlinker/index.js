@@ -1,3 +1,30 @@
+const minimalProposals = ['class-properties', 'decorators'];
+
+// https://babeljs.io/docs/en/plugins#experimental
+const allProposals = [
+  'class-properties',
+  'decorators',
+  'do-expressions',
+  'export-default-from',
+  'export-namespace-from',
+  'function-bind',
+  'function-sent',
+  'logical-assignment-operators',
+  'nullish-coalescing-operator',
+  'numeric-separator',
+  'optional-chaining',
+  'partial-application',
+  'pipeline-operator',
+  'private-methods',
+  'throw-expressions',
+];
+
+const hasProposal = (proposals, proposal) => {
+  if (proposals.includes(proposal)) return true;
+  if (proposals.includes(`@babel/plugin-proposal-${proposal}`)) return true;
+  return false;
+};
+
 module.exports = (api, options = {}) => {
   const env = api.env();
   const isProd = env === 'production';
@@ -5,11 +32,29 @@ module.exports = (api, options = {}) => {
   const isTest = env === 'test';
 
   const {
+    // Enable Flow syntax.
     flow = false,
+    // Enable TypeScript syntax.
     typescript = false,
-    // 'minimal' | 'all' | string[]
+
+    // ES experimental syntax:
+    // - 'minimal': only enable class-properties and decorators syntax.
+    // - 'all': enable all experimental syntax.
+    // - ['proposal-name']: user specified experimental syntax array.
     proposals = 'minimal',
+
+    // Followings are babel-plugin-entry options.
+    // https://github.com/fedlinker/fedlinker/blob/master/packages/babel-plugin-entry/README.md
+    entry = undefined,
+    polyfills = [],
   } = options;
+
+  // Can't enable flow and typescript both.
+  if (flow && typescript) {
+    throw new Error(
+      `[babel-preset-fedlinker]: can't enable flow and typescript both`
+    );
+  }
 
   const presets = [];
   const plugins = [];
@@ -26,8 +71,8 @@ module.exports = (api, options = {}) => {
       : {
           // Assume module resolving handled by a builder (like Webpack) by default.
           modules: false,
-          // Use corejs polyfills on demand.
-          useBuiltIns: 'usage',
+          // Allow import @babel/polyfill
+          useBuiltIns: 'entry',
           corejs: 3,
           shippedProposals: proposals === 'all',
           ...options['@babel/preset-env'],
@@ -35,13 +80,9 @@ module.exports = (api, options = {}) => {
   ]);
 
   // Inject polyfills to entry files.
-  plugins.push([
-    require('babel-plugin-entry'),
-    {
-      ...options,
-      polyfills: getPolyfills(options),
-    },
-  ]);
+  if (entry && polyfills && polyfills.length) {
+    plugins.push([require('babel-plugin-entry'), { entry, polyfills }]);
+  }
 
   // Hoist React elements to the highest possible scope in production env.
   if (isProd) {
@@ -63,9 +104,9 @@ module.exports = (api, options = {}) => {
   ]);
 
   // Experimental.
-  let resolvedProposals;
-  if (proposals === 'minimal') resolvedProposals = getMinimalProposals();
-  else if (proposals === 'all') resolvedProposals = getAllProposals();
+  let resolvedProposals = proposals;
+  if (proposals === 'minimal') resolvedProposals = minimalProposals;
+  else if (proposals === 'all') resolvedProposals = allProposals;
   else if (!Array.isArray(proposals)) resolvedProposals = [];
 
   if (hasProposal(resolvedProposals, 'do-expressions')) {
@@ -84,7 +125,9 @@ module.exports = (api, options = {}) => {
     plugins.push(require('@babel/plugin-proposal-function-sent'));
   }
   if (hasProposal(resolvedProposals, 'logical-assignment-operators')) {
-    plugins.push(require('@babel/plugin-proposal-logical-assignment-operators'));
+    plugins.push(
+      require('@babel/plugin-proposal-logical-assignment-operators')
+    );
   }
   if (hasProposal(resolvedProposals, 'nullish-coalescing-operator')) {
     plugins.push(require('@babel/plugin-proposal-nullish-coalescing-operator'));
@@ -95,7 +138,7 @@ module.exports = (api, options = {}) => {
   if (hasProposal(resolvedProposals, 'optional-chaining')) {
     plugins.push([
       require('@babel/plugin-proposal-optional-chaining'),
-      { loose: true, ...options['@babel/plugin-proposal-optional-chaining'] },
+      { ...options['@babel/plugin-proposal-optional-chaining'] },
     ]);
   }
   if (hasProposal(resolvedProposals, 'partial-application')) {
@@ -122,7 +165,7 @@ module.exports = (api, options = {}) => {
   if (hasProposal(resolvedProposals, 'decorators')) {
     plugins.push([
       require('@babel/plugin-proposal-decorators'),
-      { decoratorsBeforeExport: true, ...options['@babel/plugin-proposal-class-properties'] },
+      { legacy: true, ...options['@babel/plugin-proposal-class-properties'] },
     ]);
   }
   if (hasProposal(resolvedProposals, 'class-properties')) {
@@ -132,13 +175,14 @@ module.exports = (api, options = {}) => {
     ]);
   }
 
+  // Dynamic import.
+  plugins.push([require('@babel/plugin-syntax-dynamic-import')]);
+
   // Runtime.
   plugins.push([
     require('@babel/plugin-transform-runtime'),
     {
       corejs: 3,
-      helpers: true,
-      regenerator: true,
       useESModules: !isTest,
       ...options['@babel/plugin-transform-runtime'],
     },
@@ -162,11 +206,13 @@ module.exports = (api, options = {}) => {
     ]);
   }
 
-  // Overrides.
+  // Overrides for enabling Flow or TypeScript syntax.
   if (flow) {
     overrides.push({
       exclude: /\.tsx?$/,
-      presets: [[require('@babel/preset-flow'), { ...options['@babel/preset-flow'] }]],
+      presets: [
+        [require('@babel/preset-flow'), { ...options['@babel/preset-flow'] }],
+      ],
     });
   }
   if (typescript) {
@@ -175,18 +221,28 @@ module.exports = (api, options = {}) => {
       presets: [
         [
           require('@babel/preset-typescript'),
-          { isTSX: true, allExtensions: true, ...options['@babel/preset-typescript'] },
+          {
+            isTSX: true,
+            allExtensions: true,
+            ...options['@babel/preset-typescript'],
+          },
         ],
       ],
       // Support TypeScript experimental decorators syntax.
       plugins: [
         [
           require('@babel/plugin-proposal-decorators'),
-          { ...options['@babel/plugin-proposal-class-properties'], legacy: true },
+          {
+            ...options['@babel/plugin-proposal-class-properties'],
+            legacy: true,
+          },
         ],
         [
           require('@babel/plugin-proposal-class-properties'),
-          { ...options['@babel/plugin-proposal-class-properties'], loose: true },
+          {
+            ...options['@babel/plugin-proposal-class-properties'],
+            loose: true,
+          },
         ],
       ],
     });
@@ -194,60 +250,3 @@ module.exports = (api, options = {}) => {
 
   return { presets, plugins, overrides };
 };
-
-function getAllProposals() {
-  return [
-    'class-properties',
-    'decorators',
-    'do-expressions',
-    'export-default-from',
-    'export-namespace-from',
-    'function-bind',
-    'function-sent',
-    'logical-assignment-operators',
-    'nullish-coalescing-operator',
-    'numeric-separator',
-    'optional-chaining',
-    'partial-application',
-    'pipeline-operator',
-    'private-methods',
-    'throw-expressions',
-  ];
-}
-
-function getMinimalProposals() {
-  return ['class-properties', 'decorators'];
-}
-
-function hasProposal(proposals, proposal) {
-  if (proposals.includes(proposal)) return true;
-  if (proposals.includes(`@babel/plugin-proposal-${proposal}`)) return true;
-  return false;
-}
-
-function getPolyfills(options) {
-  const { injectPolyfills = true, fetchPolyfill = false, polyfills: userPolyfills = [] } = options;
-
-  // Collection polyfills
-  let polyfills = [];
-
-  if (injectPolyfills) {
-    // https://reactjs.org/docs/javascript-environment-requirements.html
-    polyfills = [
-      '@babel/runtime-corejs3/core-js-stable/map.js',
-      '@babel/runtime-corejs3/core-js-stable/set.js',
-      require.resolve('raf'),
-    ];
-
-    if (fetchPolyfill) {
-      polyfills.push(require.resolve('whatwg-fetch'));
-      polyfills.push(require.resolve('abortcontroller-polyfill'));
-    }
-  }
-
-  if (Array.isArray(userPolyfills)) {
-    polyfills = polyfills.concat(userPolyfills);
-  }
-
-  return polyfills;
-}
