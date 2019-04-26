@@ -12,7 +12,7 @@ yarn add -D babel-plugin-entry
 
 ## Usage
 
-In your babel configuration file (i.e. `.babelrc.js`):
+In your babel configuration file (i.e. `babel.config.js`):
 
 ```js
 const path = require('path');
@@ -33,7 +33,7 @@ module.exports = {
 
 ## Options
 
-- **`entry`**: Entry file(s). **Required**. Must be an absolute path or an array contains absolute path.
+- **`entry`**: Entry file(s). Must be an absolute path with file extension or an array contains absolute paths with file extensions.
 - **`polyfills`**: Injected polyfills. They can be module names and absolute paths.
 
 ## Licenses

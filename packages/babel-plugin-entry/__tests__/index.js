@@ -33,15 +33,6 @@ describe('babel-plugin-entry', () => {
   });
 
   test('check entry option', () => {
-    // no entry
-    expect(() => {
-      babel.transformSync(inputCode, {
-        babelrc: false,
-        plugins: [[entryPlugin]],
-        filename,
-      });
-    }).toThrow();
-
     // invalid values
     [
       '/without-file-extension',

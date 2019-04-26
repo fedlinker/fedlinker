@@ -3,16 +3,19 @@
   "version": "0.0.0",
   "description": "Babel plugin for injecting polyfills into entry file(s)",
   "keywords": [
-    "babel",
+    "Babel",
     "plugin",
     "entry",
-    "polyfill"
+    "entries",
+    "polyfill",
+    "polyfills"
   ],
   "publishConfig": {
     "access": "public"
   },
   "author": "李蔚生",
   "homepage": "https://github.com/fedlinker/fedlinker/blob/master/packages/babel-plugin-entry/README.md",
+  "license": "MIT AND Anti-996",
   "licenses": [
     {
       "type": "MIT",
