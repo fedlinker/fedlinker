@@ -1,32 +1,29 @@
 const path = require('path');
 const babel = require('@babel/core');
-const entryPlugin = require('../index');
-const inputCode = `class Foo {}`;
+const plugin = require('../index');
 const cwd = process.cwd();
 const filename = path.join(cwd, 'entry.js');
 
 describe('babel-plugin-entry', () => {
   test('shoud inject polyfills correctly', () => {
-    const { code } = babel.transformSync(inputCode, {
+    const { code } = babel.transformSync('', {
       babelrc: false,
       plugins: [
         [
-          entryPlugin,
-          { entry: filename, polyfills: ['module-name', '/root/polyfill.js'] },
+          plugin,
+          { entry: filename, polyfills: ['module-name', '/polyfills.js'] },
         ],
       ],
       filename: filename,
     });
     expect(code).toMatch(`import "module-name"`);
-    expect(code).toMatch(`import "/root/polyfill.js"`);
+    expect(code).toMatch(`import "/polyfills.js"`);
   });
 
   test('entry can be an array', () => {
-    const { code } = babel.transformSync(inputCode, {
+    const { code } = babel.transformSync('', {
       babelrc: false,
-      plugins: [
-        [entryPlugin, { entry: [filename], polyfills: ['module-name'] }],
-      ],
+      plugins: [[plugin, { entry: [filename], polyfills: ['module-name'] }]],
       filename: filename,
     });
     expect(code).toMatch(`import "module-name"`);
@@ -41,9 +38,9 @@ describe('babel-plugin-entry', () => {
       '',
     ].forEach(entry => {
       expect(() => {
-        babel.transformSync(inputCode, {
+        babel.transformSync('', {
           babelrc: false,
-          plugins: [[entryPlugin, { entry: entry }]],
+          plugins: [[plugin, { entry: entry }]],
           filename,
         });
       }).toThrow();
@@ -53,9 +50,9 @@ describe('babel-plugin-entry', () => {
   test('check polyfills option', () => {
     // polyfills is not an array
     expect(() => {
-      babel.transformSync(inputCode, {
+      babel.transformSync('', {
         babelrc: false,
-        plugins: [[entryPlugin, { entry: filename, polyfills: false }]],
+        plugins: [[plugin, { entry: filename, polyfills: false }]],
         filename,
       });
     }).toThrow();
@@ -63,9 +60,9 @@ describe('babel-plugin-entry', () => {
     // polyfills contains invalid value
     ['', './relative-path'].forEach(polyfill => {
       expect(() => {
-        babel.transformSync(inputCode, {
+        babel.transformSync('', {
           babelrc: false,
-          plugins: [[entryPlugin, { entry: filename, polyfills: [polyfill] }]],
+          plugins: [[plugin, { entry: filename, polyfills: [polyfill] }]],
           filename,
         });
       }).toThrow();

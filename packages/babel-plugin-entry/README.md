@@ -36,6 +36,6 @@ module.exports = {
 - **`entry`**: Entry file(s). Must be an absolute path with file extension or an array contains absolute paths with file extensions.
 - **`polyfills`**: Injected polyfills. They can be module names and absolute paths.
 
-## Licenses
+## License
 
-[MIT License](https://github.com/fedlinker/fedlinker/blob/master/MIT-LICENSE) and [Anti 996 License](https://github.com/fedlinker/fedlinker/blob/master/Anti-996-LICENSE).
+[Anti 996 License (反 996 许可证)](./LICENSE).
