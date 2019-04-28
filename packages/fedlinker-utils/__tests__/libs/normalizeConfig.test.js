@@ -18,11 +18,11 @@ describe('fedlinker-utils', () => {
         polyfills: [],
         pages: [
           {
-            name: 'index',
+            name: 'main',
             entry: path.resolve(cwd, './src'),
             filename: 'index.html',
             template: undefined,
-            title: 'Index',
+            title: 'Home',
           },
         ],
         babel: undefined,

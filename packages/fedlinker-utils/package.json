@@ -19,5 +19,8 @@
   },
   "bugs": {
     "url": "https://github.com/fedlinker/fedlinker/issues"
+  },
+  "dependencies": {
+    "title-case": "^2.1.1"
   }
 }

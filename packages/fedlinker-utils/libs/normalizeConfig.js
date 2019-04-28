@@ -1,4 +1,5 @@
 const path = require('path');
+const titleCase = require('title-case');
 const cwd = process.cwd();
 const validateConfig = require('./validateConfig');
 
@@ -59,7 +60,7 @@ module.exports = (config = {}, shouldValidate = true) => {
           entry: path.join(src, name),
           filename: `${name}.html`,
           template: undefined,
-          title: name[0].toUpperCase() + name.slice(1).toLowerCase(),
+          title: titleCase(name),
         });
       }
     }
@@ -81,9 +82,7 @@ module.exports = (config = {}, shouldValidate = true) => {
         if (entry == null) entry = path.join(src, name);
         if (!path.isAbsolute(entry)) entry = path.join(src, entry);
         if (!filename) filename = `${name}.html`;
-        if (title == null) {
-          title = name[0].toUpperCase() + name.slice(1).toLowerCase();
-        }
+        if (title == null) title = titleCase(name);
 
         result.pages.push({ name, entry, filename, template, title });
       }
@@ -91,11 +90,11 @@ module.exports = (config = {}, shouldValidate = true) => {
   } else {
     result.pages = [
       {
-        name: 'index',
+        name: 'main',
         entry: src,
         filename: 'index.html',
         template: undefined,
-        title: 'Index',
+        title: 'Home',
       },
     ];
   }
