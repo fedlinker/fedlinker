@@ -11,16 +11,7 @@
   ],
   "author": "李蔚生",
   "homepage": "https://github.com/fedlinker/fedlinker/blob/master/packages/fedlinker-utils/README.md",
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "https://github.com/fedlinker/fedlinker/blob/master/MIT-LICENSE"
-    },
-    {
-      "type": "Anti-996",
-      "url": "https://github.com/fedlinker/fedlinker/blob/master/Anti-996-LICENSE"
-    }
-  ],
+  "license": "SEE LICENSE IN LICENSE",
   "main": "index.js",
   "repository": {
     "type": "git",
