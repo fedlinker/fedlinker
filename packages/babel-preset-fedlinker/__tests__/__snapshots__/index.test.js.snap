@@ -1,12 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`babel-preset-fedlinker basic should transform correctly in development env 1`] = `
+exports[`babel-preset-fedlinker environment in development 1`] = `
 "import _classCallCheck from \\"@babel/runtime-corejs3/helpers/esm/classCallCheck\\";
 import _createClass from \\"@babel/runtime-corejs3/helpers/esm/createClass\\";
 import _possibleConstructorReturn from \\"@babel/runtime-corejs3/helpers/esm/possibleConstructorReturn\\";
 import _getPrototypeOf from \\"@babel/runtime-corejs3/helpers/esm/getPrototypeOf\\";
 import _inherits from \\"@babel/runtime-corejs3/helpers/esm/inherits\\";
-var _jsxFileName = \\"/entry.jsx\\";
+var _jsxFileName = \\"/index.jsx\\";
 import React, { Component } from 'react';
 import propTypes from 'prop-types';
 
@@ -48,7 +48,7 @@ Button.propTypes = {
 export default Button;"
 `;
 
-exports[`babel-preset-fedlinker basic should transform correctly in production env 1`] = `
+exports[`babel-preset-fedlinker environment in production 1`] = `
 "import _classCallCheck from \\"@babel/runtime-corejs3/helpers/esm/classCallCheck\\";
 import _createClass from \\"@babel/runtime-corejs3/helpers/esm/createClass\\";
 import _possibleConstructorReturn from \\"@babel/runtime-corejs3/helpers/esm/possibleConstructorReturn\\";
@@ -85,7 +85,7 @@ function (_Component) {
 export default Button;"
 `;
 
-exports[`babel-preset-fedlinker basic should transform correctly in test env 1`] = `
+exports[`babel-preset-fedlinker environment in test 1`] = `
 "\\"use strict\\";
 
 var _interopRequireWildcard = require(\\"@babel/runtime-corejs3/helpers/interopRequireWildcard\\");
@@ -104,7 +104,7 @@ var _react = _interopRequireWildcard(require(\\"react\\"));
 
 var _propTypes = _interopRequireDefault(require(\\"prop-types\\"));
 
-var _jsxFileName = \\"/entry.jsx\\";
+var _jsxFileName = \\"/index.jsx\\";
 
 class Button extends _react.Component {
   render() {
@@ -132,44 +132,78 @@ var _default = Button;
 exports.default = _default;"
 `;
 
+exports[`babel-preset-fedlinker polyfills should inject default polyfills and user polyfills in entry file 1`] = `
+"import \\"core-js/features/array/iterator\\";
+import \\"core-js/features/promise\\";
+import \\"core-js/features/promise/finally\\";
+import \\"core-js/features/object/assign\\";
+import \\"core-js/features/array/from\\";
+import \\"core-js/features/symbol\\";
+import \\"core-js/features/set\\";
+import \\"core-js/features/map\\";
+import \\"raf/polyfill\\";
+import \\"whatwg-fetch\\";
+import \\"abortcontroller-polyfill/dist/polyfill-patch-fetch\\";
+import \\"module-name\\";"
+`;
+
 exports[`babel-preset-fedlinker proposals all proposals 1`] = `
 "import _regeneratorRuntime from \\"@babel/runtime-corejs3/regenerator\\";
 import _Object$defineProperty from \\"@babel/runtime-corejs3/core-js-stable/object/define-property\\";
-import _concatInstanceProperty from \\"@babel/runtime-corejs3/core-js-stable/instance/concat\\";
-import _classCallCheck from \\"@babel/runtime-corejs3/helpers/esm/classCallCheck\\";
-import _possibleConstructorReturn from \\"@babel/runtime-corejs3/helpers/esm/possibleConstructorReturn\\";
-import _getPrototypeOf from \\"@babel/runtime-corejs3/helpers/esm/getPrototypeOf\\";
-import _assertThisInitialized from \\"@babel/runtime-corejs3/helpers/esm/assertThisInitialized\\";
-import _inherits from \\"@babel/runtime-corejs3/helpers/esm/inherits\\";
-import _wrapNativeSuper from \\"@babel/runtime-corejs3/helpers/esm/wrapNativeSuper\\";
-import _classPrivateFieldLooseBase from \\"@babel/runtime-corejs3/helpers/esm/classPrivateFieldLooseBase\\";
 import _classPrivateFieldLooseKey from \\"@babel/runtime-corejs3/helpers/esm/classPrivateFieldLooseKey\\";
 import _skipFirstGeneratorNext from \\"@babel/runtime-corejs3/helpers/esm/skipFirstGeneratorNext\\";
 import \\"regenerator-runtime/runtime\\";
 import _bindInstanceProperty from \\"@babel/runtime-corejs3/core-js-stable/instance/bind\\";
+import _classCallCheck from \\"@babel/runtime-corejs3/helpers/esm/classCallCheck\\";
+import _asyncToGenerator from \\"@babel/runtime-corejs3/helpers/esm/asyncToGenerator\\";
 
-var _object$foo, _context, _context2, _obj, _obj$foo, _obj$foo$bar, _x, _f, _ref, _ref2, _hello;
+var _class, _class2, _temp, _object$foo, _context, _context2, _a, _a$b, _a$b$c, _param, _partialApplication, _value;
 
-// do-expressions
-var a = x > 10 ? 'big' : 'small'; // nullish-coalescing-operator
+function asyncFunction() {
+  return _asyncFunction.apply(this, arguments);
+}
 
-var foo = (_object$foo = object.foo) !== null && _object$foo !== void 0 ? _object$foo : \\"default\\"; // function-bind
-
-_bindInstanceProperty(_context2 = (_context = obj, func)).call(_context2, _context); // function-sent
-
-
-function generator() {
-  return _generator.apply(this, arguments);
-} // logical-assignment-operators
-
-
-function _generator() {
-  _generator = _skipFirstGeneratorNext(
+function _asyncFunction() {
+  _asyncFunction = _asyncToGenerator(
   /*#__PURE__*/
   _regeneratorRuntime.mark(function _callee() {
+    return _regeneratorRuntime.wrap(function _callee$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            _context3.next = 2;
+            return awaitFunciton();
+
+          case 2:
+          case \\"end\\":
+            return _context3.stop();
+        }
+      }
+    }, _callee);
+  }));
+  return _asyncFunction.apply(this, arguments);
+}
+
+var Class = decorator(_class = (_temp = _class2 = function Class() {
+  _classCallCheck(this, Class);
+}, _class2.prop = 'prop', _temp)) || _class;
+
+var doExpression = 'value';
+var nullishCoalescing = (_object$foo = object.foo) !== null && _object$foo !== void 0 ? _object$foo : 'bar';
+
+_bindInstanceProperty(_context2 = (_context = boundObject, functionBind)).call(_context2, _context);
+
+function functionSent() {
+  return _functionSent2.apply(this, arguments);
+}
+
+function _functionSent2() {
+  _functionSent2 = _skipFirstGeneratorNext(
+  /*#__PURE__*/
+  _regeneratorRuntime.mark(function _callee2() {
     var _functionSent;
 
-    return _regeneratorRuntime.wrap(function _callee$(_context4) {
+    return _regeneratorRuntime.wrap(function _callee2$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
@@ -178,103 +212,65 @@ function _generator() {
 
           case 2:
             _functionSent = _context4.sent;
-            console.log(\\"Sent\\", _functionSent);
-            _context4.t0 = console;
-            _context4.next = 7;
-            return;
+            console.log(_functionSent);
 
-          case 7:
-            _context4.t1 = _functionSent = _context4.sent;
-
-            _context4.t0.log.call(_context4.t0, \\"Yield\\", _context4.t1);
-
-          case 9:
+          case 4:
           case \\"end\\":
             return _context4.stop();
         }
       }
-    }, _callee);
+    }, _callee2);
   }));
-  return _generator.apply(this, arguments);
+  return _functionSent2.apply(this, arguments);
 }
 
-a || (a = b); // numeric-separator
+logicalAssignment || (logicalAssignment = otherVariable);
+var numericSeparator = 1000000000000;
+var optionalChaining = (_a = a) === null || _a === void 0 ? void 0 : (_a$b = _a.b) === null || _a$b === void 0 ? void 0 : (_a$b$c = _a$b.c) === null || _a$b$c === void 0 ? void 0 : _a$b$c.d;
+_partialApplication = partialApplication, _param = param, function partialApplication(_argPlaceholder) {
+  return _partialApplication(_argPlaceholder, _param);
+};
+var pipelineResult = (_value = \\"value\\", processFunction(_value));
 
-var budget = 1000000000000; // optional-chaining
+var PrivateMethodClass = function PrivateMethodClass() {
+  _classCallCheck(this, PrivateMethodClass);
 
-var baz = (_obj = obj) === null || _obj === void 0 ? void 0 : (_obj$foo = _obj.foo) === null || _obj$foo === void 0 ? void 0 : (_obj$foo$bar = _obj$foo.bar) === null || _obj$foo$bar === void 0 ? void 0 : _obj$foo$bar.baz; // partial-application
-
-_f = f, _x = x, function f(_argPlaceholder) {
-  return _f(_argPlaceholder, _x);
-}; // pipeline-operator
-
-var result = (_ref = (_ref2 = (_hello = \\"hello\\", doubleSay(_hello)), capitalize(_ref2)), exclaim(_ref)); // private-methods
-
-var Counter =
-/*#__PURE__*/
-function (_HTMLElement) {
-  _inherits(Counter, _HTMLElement);
-
-  function Counter() {
-    var _getPrototypeOf2, _context3;
-
-    var _this;
-
-    _classCallCheck(this, Counter);
-
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(Counter)).call.apply(_getPrototypeOf2, _concatInstanceProperty(_context3 = [this]).call(_context3, args)));
-
-    _Object$defineProperty(_assertThisInitialized(_this), _clicked, {
-      value: _clicked2
-    });
-
-    _Object$defineProperty(_assertThisInitialized(_this), _x2, {
-      get: _get_x,
-      set: _set_x
-    });
-
-    _Object$defineProperty(_assertThisInitialized(_this), _xValue, {
-      writable: true,
-      value: 0
-    });
-
-    return _this;
-  }
-
-  return Counter;
-}(_wrapNativeSuper(HTMLElement)); // throw-expressions
-
-
-var _xValue = _classPrivateFieldLooseKey(\\"xValue\\");
-
-var _x2 = _classPrivateFieldLooseKey(\\"x\\");
-
-var _clicked = _classPrivateFieldLooseKey(\\"clicked\\");
-
-var _get_x = function _get_x() {
-  return _classPrivateFieldLooseBase(this, _xValue)[_xValue];
+  _Object$defineProperty(this, _privateProp, {
+    writable: true,
+    value: 'value'
+  });
 };
 
-var _set_x = function _set_x(value) {
-  _classPrivateFieldLooseBase(this, _xValue)[_xValue] = value;
-};
+var _privateProp = _classPrivateFieldLooseKey(\\"privateProp\\");
 
-var _clicked2 = function _clicked2() {
-  _classPrivateFieldLooseBase(this, _x2)[_x2]++;
-};
-
-filename = function (e) {
+var throwExpression = function (e) {
   throw e;
-}(new TypeError(\\"Argument required\\")); // export-default-from
+}(new Error(\\"message\\"));
 
+import _exportDefaultFrom from 'module-name';
+export { _exportDefaultFrom as exportDefaultFrom };
+import * as _exportNamespaceFrom from 'module-name';
+export { _exportNamespaceFrom as exportNamespaceFrom };"
+`;
 
-import _v from 'mod';
-export { _v as v }; // export-namespace-from
+exports[`babel-preset-fedlinker proposals minimal proposals 1`] = `
+"import _classCallCheck from \\"@babel/runtime-corejs3/helpers/esm/classCallCheck\\";
 
-import * as _ns from 'mod';
-export { _ns as ns };"
+var _class, _class2, _temp;
+
+var Class = decorator(_class = (_temp = _class2 = function Class() {
+  _classCallCheck(this, Class);
+}, _class2.prop = 'prop', _temp)) || _class;"
+`;
+
+exports[`babel-preset-fedlinker static type checker transform flow syntax correctly 1`] = `
+"function square(n) {
+  return n * n;
+}"
+`;
+
+exports[`babel-preset-fedlinker static type checker transform typescript syntax correctly 1`] = `
+"function identity(arg) {
+  return arg;
+}"
 `;

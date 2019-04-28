@@ -1,28 +1,27 @@
 const minimalProposals = ['class-properties', 'decorators'];
-
 // https://babeljs.io/docs/en/plugins#experimental
-const allProposals = [
-  'class-properties',
-  'decorators',
-  'do-expressions',
-  'export-default-from',
-  'export-namespace-from',
-  'function-bind',
-  'function-sent',
-  'logical-assignment-operators',
-  'nullish-coalescing-operator',
-  'numeric-separator',
-  'optional-chaining',
-  'partial-application',
-  'pipeline-operator',
-  'private-methods',
-  'throw-expressions',
+const allProposals = require('fedlinker-utils').proposals;
+
+const defaultPolyfills = [
+  // Dynamic import.
+  'core-js/features/array/iterator',
+  'core-js/features/promise',
+  'core-js/features/promise/finally',
+  // React.
+  'core-js/features/object/assign',
+  'core-js/features/array/from',
+  'core-js/features/symbol',
+  'core-js/features/set',
+  'core-js/features/map',
+  'raf/polyfill',
+  // `window.fetch()`.
+  'whatwg-fetch',
+  'abortcontroller-polyfill/dist/polyfill-patch-fetch',
 ];
 
 const hasProposal = (proposals, proposal) => {
   if (proposals.includes(proposal)) return true;
   if (proposals.includes(`@babel/plugin-proposal-${proposal}`)) return true;
-  return false;
 };
 
 module.exports = (api, options = {}) => {
@@ -31,173 +30,218 @@ module.exports = (api, options = {}) => {
   const isDev = env === 'development';
   const isTest = env === 'test';
 
-  const {
-    // Enable Flow syntax.
+  let {
+    // Whether support Flow syntax.
     flow = false,
-    // Enable TypeScript syntax.
+
+    // Whether support TypeScript syntax.
     typescript = false,
 
     // ES experimental syntax:
-    // - 'minimal': only enable class-properties and decorators syntax.
-    // - 'all': enable all experimental syntax.
-    // - ['proposal-name']: user specified experimental syntax array.
+    // - "minimal": only enable "class-properties" and "decorators" syntax.
+    // - "all": enable all experimental syntax that Babel supports.
+    // - Array: user specified experimental syntax array. They can be:
+    //   - "class-properties"
+    //   - "decorators"
+    //   - "do-expressions"
+    //   - "export-default-from"
+    //   - "export-namespace-from"
+    //   - "function-bind"
+    //   - "function-sent"
+    //   - "logical-assignment-operators"
+    //   - "nullish-coalescing-operator"
+    //   - "numeric-separator"
+    //   - "optional-chaining"
+    //   - "partial-application"
+    //   - "pipeline-operator"
+    //   - "private-methods"
+    //   - "throw-expressions"
+    //   Ref: https://babeljs.io/docs/en/plugins#experimental
     proposals = 'minimal',
 
-    // Followings are babel-plugin-entry options.
-    // https://github.com/fedlinker/fedlinker/blob/master/packages/babel-plugin-entry/README.md
-    entry = undefined,
+    // Inject default polyfills for supporting dynamic import, React and fetch
+    // method in lower version browers.
+    injectDefaultPolyfills = true,
+
+    // Follings are babel-plugin-entry options.
+    // Ref: https://github.com/fedlinker/fedlinker/blob/master/packages/babel-plugin-entry/README.md#options
+    entry,
     polyfills = [],
   } = options;
 
   // Can't enable flow and typescript both.
   if (flow && typescript) {
-    throw new Error(
-      `[babel-preset-fedlinker]: can't enable flow and typescript both`
-    );
+    throw new Error(`Can't enable flow and typescript both`);
   }
+
+  // Resolve proposals.
+  if (proposals === 'minimal') proposals = minimalProposals;
+  else if (proposals === 'all') proposals = allProposals;
+  else if (!Array.isArray(proposals)) proposals = [];
+
+  // Combine user polyfills and default polyfills
+  if (!Array.isArray(polyfills)) polyfills = [polyfills];
+  polyfills = []
+    .concat(injectDefaultPolyfills ? defaultPolyfills : [])
+    .concat(polyfills);
 
   const presets = [];
   const plugins = [];
   const overrides = [];
 
-  // Env.
+  // Env preset.
   presets.push([
-    require('@babel/preset-env'),
+    require.resolve('@babel/preset-env'),
     isTest
       ? {
+          // In test env, target to current node. Transform module to commonjs.
           targets: { node: 'current' },
           ...options['@babel/preset-env'],
         }
       : {
-          // Assume module resolving handled by a builder (like Webpack) by default.
+          // Assume module resolving handled by a builder (like Webpack).
           modules: false,
-          // Allow import @babel/polyfill
-          useBuiltIns: 'entry',
+          // Use polyfills on demand.
+          useBuiltIns: 'usage',
+          // Use corejs version 3 as built-in polyfills.
           corejs: 3,
+          // Don't polyfill those, should be handled by providing global polyfills.
+          exclude: [
+            'es.array.iterator',
+            'es.promise',
+            'es.promise.finally',
+            'es.object.assign',
+            'es.array.from',
+            'es.symbol',
+            'es.set',
+            'es.map',
+          ],
           shippedProposals: proposals === 'all',
           ...options['@babel/preset-env'],
         },
   ]);
 
-  // Inject polyfills to entry files.
-  if (entry && polyfills && polyfills.length) {
-    plugins.push([require('babel-plugin-entry'), { entry, polyfills }]);
-  }
-
   // Hoist React elements to the highest possible scope in production env.
   if (isProd) {
     plugins.push([
-      require('@babel/plugin-transform-react-constant-elements'),
+      require.resolve('@babel/plugin-transform-react-constant-elements'),
       { ...options['@babel/plugin-transform-react-constant-elements'] },
     ]);
   }
 
-  // React
+  // React preset.
   presets.push([
-    require('@babel/preset-react'),
+    require.resolve('@babel/preset-react'),
     {
-      // Don't add polyfills.
+      // Don't add polyfills, env preset will handle this.
       useBuiltIns: true,
       development: isDev || isTest,
       ...options['@babel/preset-react'],
     },
   ]);
 
-  // Experimental.
-  let resolvedProposals = proposals;
-  if (proposals === 'minimal') resolvedProposals = minimalProposals;
-  else if (proposals === 'all') resolvedProposals = allProposals;
-  else if (!Array.isArray(proposals)) resolvedProposals = [];
+  // Inject polyfills in entry file(s).
+  if (entry && polyfills.length) {
+    plugins.push([
+      require('babel-plugin-entry'),
+      {
+        entry,
+        polyfills,
+      },
+    ]);
+  }
 
-  if (hasProposal(resolvedProposals, 'do-expressions')) {
-    plugins.push(require('@babel/plugin-proposal-do-expressions'));
+  // Experimental syntax.
+  if (hasProposal(proposals, 'decorators')) {
+    plugins.push([
+      require.resolve('@babel/plugin-proposal-decorators'),
+      { legacy: true, ...options['@babel/plugin-proposal-decorators'] },
+    ]);
   }
-  if (hasProposal(resolvedProposals, 'export-default-from')) {
-    plugins.push(require('@babel/plugin-proposal-export-default-from'));
+  if (hasProposal(proposals, 'class-properties')) {
+    plugins.push([
+      require.resolve('@babel/plugin-proposal-class-properties'),
+      { loose: true, ...options['@babel/plugin-proposal-class-properties'] },
+    ]);
   }
-  if (hasProposal(resolvedProposals, 'export-namespace-from')) {
-    plugins.push(require('@babel/plugin-proposal-export-namespace-from'));
+  if (hasProposal(proposals, 'do-expressions')) {
+    plugins.push(require.resolve('@babel/plugin-proposal-do-expressions'));
   }
-  if (hasProposal(resolvedProposals, 'function-bind')) {
-    plugins.push(require('@babel/plugin-proposal-function-bind'));
+  if (hasProposal(proposals, 'export-default-from')) {
+    plugins.push(require.resolve('@babel/plugin-proposal-export-default-from'));
   }
-  if (hasProposal(resolvedProposals, 'function-sent')) {
-    plugins.push(require('@babel/plugin-proposal-function-sent'));
-  }
-  if (hasProposal(resolvedProposals, 'logical-assignment-operators')) {
+  if (hasProposal(proposals, 'export-namespace-from')) {
     plugins.push(
-      require('@babel/plugin-proposal-logical-assignment-operators')
+      require.resolve('@babel/plugin-proposal-export-namespace-from')
     );
   }
-  if (hasProposal(resolvedProposals, 'nullish-coalescing-operator')) {
-    plugins.push(require('@babel/plugin-proposal-nullish-coalescing-operator'));
+  if (hasProposal(proposals, 'function-bind')) {
+    plugins.push(require.resolve('@babel/plugin-proposal-function-bind'));
   }
-  if (hasProposal(resolvedProposals, 'numeric-separator')) {
-    plugins.push(require('@babel/plugin-proposal-numeric-separator'));
+  if (hasProposal(proposals, 'function-sent')) {
+    plugins.push(require.resolve('@babel/plugin-proposal-function-sent'));
   }
-  if (hasProposal(resolvedProposals, 'optional-chaining')) {
+  if (hasProposal(proposals, 'logical-assignment-operators')) {
+    plugins.push(
+      require.resolve('@babel/plugin-proposal-logical-assignment-operators')
+    );
+  }
+  if (hasProposal(proposals, 'nullish-coalescing-operator')) {
+    plugins.push(
+      require.resolve('@babel/plugin-proposal-nullish-coalescing-operator')
+    );
+  }
+  if (hasProposal(proposals, 'numeric-separator')) {
+    plugins.push(require.resolve('@babel/plugin-proposal-numeric-separator'));
+  }
+  if (hasProposal(proposals, 'optional-chaining')) {
     plugins.push([
-      require('@babel/plugin-proposal-optional-chaining'),
+      require.resolve('@babel/plugin-proposal-optional-chaining'),
       { ...options['@babel/plugin-proposal-optional-chaining'] },
     ]);
   }
-  if (hasProposal(resolvedProposals, 'partial-application')) {
-    plugins.push(require('@babel/plugin-proposal-partial-application'));
+  if (hasProposal(proposals, 'partial-application')) {
+    plugins.push(require.resolve('@babel/plugin-proposal-partial-application'));
   }
-  if (hasProposal(resolvedProposals, 'pipeline-operator')) {
+  if (hasProposal(proposals, 'pipeline-operator')) {
     plugins.push([
-      require('@babel/plugin-proposal-pipeline-operator'),
+      require.resolve('@babel/plugin-proposal-pipeline-operator'),
       {
         proposal: 'minimal',
         ...options['@babel/plugin-proposal-pipeline-operator'],
       },
     ]);
   }
-  if (hasProposal(resolvedProposals, 'throw-expressions')) {
-    plugins.push(require('@babel/plugin-proposal-throw-expressions'));
+  if (hasProposal(proposals, 'throw-expressions')) {
+    plugins.push(require.resolve('@babel/plugin-proposal-throw-expressions'));
   }
-  if (hasProposal(resolvedProposals, 'private-methods')) {
+  if (hasProposal(proposals, 'private-methods')) {
     plugins.push([
-      require('@babel/plugin-proposal-private-methods'),
+      require.resolve('@babel/plugin-proposal-private-methods'),
       { loose: true, ...options['@babel/plugin-proposal-private-methods'] },
-    ]);
-  }
-  if (hasProposal(resolvedProposals, 'decorators')) {
-    plugins.push([
-      require('@babel/plugin-proposal-decorators'),
-      { legacy: true, ...options['@babel/plugin-proposal-class-properties'] },
-    ]);
-  }
-  if (hasProposal(resolvedProposals, 'class-properties')) {
-    plugins.push([
-      require('@babel/plugin-proposal-class-properties'),
-      { loose: true, ...options['@babel/plugin-proposal-class-properties'] },
     ]);
   }
 
   // Dynamic import.
-  plugins.push([require('@babel/plugin-syntax-dynamic-import')]);
+  plugins.push([require.resolve('@babel/plugin-syntax-dynamic-import')]);
+  if (isTest) {
+    plugins.push([require.resolve('babel-plugin-dynamic-import-node')]);
+  }
 
   // Runtime.
   plugins.push([
-    require('@babel/plugin-transform-runtime'),
+    require.resolve('@babel/plugin-transform-runtime'),
     {
       corejs: 3,
       useESModules: !isTest,
       ...options['@babel/plugin-transform-runtime'],
     },
   ]);
-  if (!isTest) {
-    plugins.push([
-      require('@babel/plugin-transform-regenerator'),
-      { async: false, ...options['@babel/plugin-transform-regenerator'] },
-    ]);
-  }
 
   // Remove propTypes in production.
   if (isProd) {
     plugins.push([
-      require('babel-plugin-transform-react-remove-prop-types'),
+      require.resolve('babel-plugin-transform-react-remove-prop-types'),
       {
         mode: 'remove',
         removeImport: true,
@@ -211,7 +255,10 @@ module.exports = (api, options = {}) => {
     overrides.push({
       exclude: /\.tsx?$/,
       presets: [
-        [require('@babel/preset-flow'), { ...options['@babel/preset-flow'] }],
+        [
+          require.resolve('@babel/preset-flow'),
+          { ...options['@babel/preset-flow'] },
+        ],
       ],
     });
   }
@@ -220,7 +267,7 @@ module.exports = (api, options = {}) => {
       include: /\.tsx?$/,
       presets: [
         [
-          require('@babel/preset-typescript'),
+          require.resolve('@babel/preset-typescript'),
           {
             isTSX: true,
             allExtensions: true,
@@ -231,14 +278,14 @@ module.exports = (api, options = {}) => {
       // Support TypeScript experimental decorators syntax.
       plugins: [
         [
-          require('@babel/plugin-proposal-decorators'),
+          require.resolve('@babel/plugin-proposal-decorators'),
           {
-            ...options['@babel/plugin-proposal-class-properties'],
+            ...options['@babel/plugin-proposal-decorators'],
             legacy: true,
           },
         ],
         [
-          require('@babel/plugin-proposal-class-properties'),
+          require.resolve('@babel/plugin-proposal-class-properties'),
           {
             ...options['@babel/plugin-proposal-class-properties'],
             loose: true,

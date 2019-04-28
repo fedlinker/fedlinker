@@ -12,9 +12,10 @@ yarn add -D babel-preset-fedlinker
 
 ## Usage
 
-In your babel configuration file (i.e. `.babelrc.js`):
+In your babel configuration file (i.e. `babel.config.js`):
 
 ```js
+const path = require('path');
 module.exports = {
   presets: [
     [
@@ -23,15 +24,9 @@ module.exports = {
         flow: false,
         typescript: false,
         proposals: 'minimal',
-        injectPolyfills: true,
-        fetchPolyfill: false,
-
-        // Flowing options are babel-plugin-entry's options.
-        // https://github.com/fedlinker/fedlinker/packages/babel-plugin-entry/README.md
-        entry: './src/index.js',
-        entries: ['./src/home/index.js', '/absolute/path/entry.js'],
-        polyfills: ['module-name', './relative-path', '/absolute-path'],
-        context: '/project-root/',
+        injectDefaultPolyfills: true,
+        entry: path.join(process.cwd(), 'src/index.js'),
+        polyfills: ['module-name', '/absolute-path'],
       },
     ],
   ],
@@ -40,22 +35,23 @@ module.exports = {
 
 ## Options
 
-- **`flow`**: Support Flow syntax, defualt `false`.
-- **`typescript`**: Support TypeScript syntax, default `false`.
-- **`proposals`**: Whitch proposals should be used.
+All options are optional.
+
+- **`flow`**: Support Flow syntax. Defualt `false`.
+- **`typescript`**: Support TypeScript syntax. Default `false`.
+- **`proposals`**: Whitch proposals should be used. Default `"minimal"`
   - `"minimal"`: Only use [class-properties](https://babeljs.io/docs/en/babel-plugin-proposal-class-properties) and [decorators](https://babeljs.io/docs/en/babel-plugin-proposal-decorators) plugins.
   - `"all"`: Use [all proposal plugins](https://babeljs.io/docs/en/plugins#experimental).
-  - `Array(proposal-name)`: Can be an array contains [propposal names](https://babeljs.io/docs/en/plugins#experimental), i.e `['export-default-from', 'export-namespace-from']`.
-- **`injectPolyfills`**: Auto inject [polyfills](https://reactjs.org/docs/javascript-environment-requirements.html). If you want auto inject polyfills, you muse specify `entry` or `entries` options.
-- **`fetchPolyfill`**: Auto inject [fetch polyfill](https://github.com/github/fetch) and [Abortcontroller polyfill](https://github.com/mo/abortcontroller-polyfill), defualt `false`.
+  - `Array`: Can be an array contains [propposal names](https://babeljs.io/docs/en/plugins#experimental), i.e `['export-default-from', 'export-namespace-from']`.
+- **`injectDefaultPolyfills`**: Auto inject default polyfills for supporting dynamic importing, React and `window.fetch()` method in lower version browers. Default `true`.
 
-The flowing options are [babel-plugin-entry](https://github.com/fedlinker/fedlinker/packages/babel-plugin-entry/README.md)'s options：
+The following options are [babel-plugin-entry options](https://github.com/fedlinker/fedlinker/blob/master/packages/babel-plugin-entry/README.md#options):
 
-- **`entry`**: Single entry filename. Can be a relative or absolue path.
-- **`entries`**: Multiple entry filenames. Cans use with `entry` option.
-- **`polyfills`**: Polyfills array. Item in `polyfills` can be a(n) module name, relative path or absolute path.
-- **`context`**: Same as Webpack `context`, default is `process.cwd()`. All relative path in options will be concated with `context`. When you changed Webpack context, you should change this option with same value.
+- **`entry`**: Entry file(s). Must be an absolute path with file extension or an array contains absolute paths with file extensions.
+- **`polyfills`**: Injected user custom polyfills. They can be module names and absolute paths.
 
-## Licenses
+Can't enable `flow` and `typescript` both.
 
-[MIT License](https://github.com/fedlinker/fedlinker/blob/master/MIT-LICENSE) and [Anti 996 License](https://github.com/fedlinker/fedlinker/blob/master/Anti-996-LICENSE).
+## License
+
+[Anti 996 License (反 996 许可证)](./LICENSE).
