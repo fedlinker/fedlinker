@@ -26,11 +26,14 @@ Use `fedlinker` command will auto process `fedlinker.config.js` file as config f
 const path = require('path');
 
 const configs = {
+  // Common config
+  // ===========================================================================
+
   // Project type. It can be "web", "lib" or "doc". Default: "web".
   // - "web": single page application, also support multi pages.
   // - "lib": develop React components library.
-  // - "doc": write with markdown, produce static website files,
-  //          support `.mdx` and runtime examples in `.md`.
+  // - "doc": write with markdown, produce static website files, support `.mdx`
+  //          and runtime examples in `.md`.
   type: 'web',
 
   // Whether enable flow syntax. Default: false.
@@ -43,7 +46,7 @@ const configs = {
   // - "minimal" (Default): only enable "class-properties" and "decorators"
   //   syntax.
   // - "all": enable all experimental syntax.
-  // - Array: user specified experimental syntax array. Include:
+  // - Array: user specified experimental syntax array. They can be:
   //   - "class-properties"
   //   - "decorators"
   //   - "do-expressions"
@@ -59,7 +62,7 @@ const configs = {
   //   - "pipeline-operator"
   //   - "private-methods"
   //   - "throw-expressions"
-  // Reference: https://babeljs.io/docs/en/plugins#experimental
+  //   Reference: https://babeljs.io/docs/en/plugins#experimental
   proposals: 'minimal',
 
   // Source code directory. Absolute path or relatibve path (relative as
@@ -75,13 +78,6 @@ const configs = {
   // directory.
   statics: 'statics',
 
-  // Same as Webpack `entry` option. Default: 'src'
-  entry: 'src',
-
-  // Same as Webpack `output.publicPath` option. Default: '/'. In development
-  // env, it will always be '/'.
-  publicPath: '/',
-
   // Custom Babel config.
   babel: fedlinkerBabelConfig => {
     // Do something.
@@ -93,8 +89,31 @@ const configs = {
     // Do something.
     return fedlinkerWebpackConfig;
   },
+
+  // Same as Webpack `output.publicPath` option. Default: '/'. In development
+  // env, it will always be '/'.
+  productionPublicPath: '/',
+
+  // 'lib' type only.
+  // ===========================================================================
+
+  // Library name, it will convert to PascalCase, but the file name will convert
+  // to kebab-case. Default: undefined. When `type === 'lib'`, this config can't
+  // be empty.
+  libName: 'LibraryName',
+
+  // Library license comments. Will be injectd into bundle files head.
+  // Default: ''.
+  licenseComments: '',
+
+  // 'doc' type only.
+  // ===========================================================================
 };
 ```
+
+### Environment variables
+
+- `BUILD_EXAMPLES`: build library examples.
 
 ### Options
 
@@ -121,3 +140,61 @@ In fedlinker-init package, only one command without options:
 - `fedlinker-init`
 
 After running this command, it will show prompts for interacting with users.
+
+## 开发 React 组件库
+
+目录结构：
+
+```
+src/
+  button/
+    docs/
+    examples/
+    __tests__/
+    index.jsx
+    index.scss
+```
+
+编译后的目录结构：
+
+```
+dist/
+  libName.js
+  libName.min.js
+  libName.css
+  libName.min.css
+lib/
+  button/
+    index.js
+    index.scss
+```
+
+## 开发单页应用
+
+目录结构：
+
+```
+src/
+  index.js
+```
+
+编译后的目录结构：
+
+```
+dist/
+  ...
+```
+
+## 开发文档
+
+目录结构：
+
+```
+src/
+```
+
+编译后的目录结构：
+
+```
+dist/
+```
