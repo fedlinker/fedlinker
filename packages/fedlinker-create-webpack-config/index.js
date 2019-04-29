@@ -1,13 +1,15 @@
 const webpack = require('webpack');
+const fs = require('fs');
 const resolve = require('resolve');
 const { normalizeConfig } = require('fedlinker-utils');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-const OfflinePlugin = require('offline-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WebpackSubresourceIntegrity = require('webpack-subresource-integrity');
+const ResourceHintWebpackPlugin = require('resource-hints-webpack-plugin');
+const WebpackBar = require('webpackbar');
 
 module.exports = (options = {}, env) => {
   // Validate and normalize options.
@@ -109,11 +111,11 @@ module.exports = (options = {}, env) => {
             options: { hmr: false },
           }
         : {
-            loader: require('style-loader'),
+            loader: require.resolve('style-loader'),
             options: { sourceMap: isDev },
           },
       {
-        loader: require('css-loader'),
+        loader: require.resolve('css-loader'),
         options: {
           modules: cssModules,
           camelCase: cssModules,
@@ -122,7 +124,7 @@ module.exports = (options = {}, env) => {
         },
       },
       {
-        loader: require('postcss-loader'),
+        loader: require.resolve('postcss-loader'),
         options: {
           sourceMap: isDev,
           ident: 'postcss',
@@ -137,7 +139,7 @@ module.exports = (options = {}, env) => {
 
     if (type !== 'css') {
       loaders.push({
-        loader: require(`${type}-loader`),
+        loader: require.resolve(`${type}-loader`),
         options: { sourceMap: isDev },
       });
     }
@@ -161,6 +163,7 @@ module.exports = (options = {}, env) => {
         : 'assets/js/[name].chunk.js',
       publicPath: isProd ? productionPublicPath : '/',
       futureEmitAssets: true,
+      crossOriginLoading: 'anonymous',
     },
     resolve: { extensions: extensions },
     devtool: isDev ? 'cheap-module-eval-source-map' : false,
@@ -187,10 +190,10 @@ module.exports = (options = {}, env) => {
             exclude: /(node_modules|bower_components)/,
             use: [
               {
-                loader: require('babel-loader'),
+                loader: require.resolve('babel-loader'),
                 options: {
                   cacheDirectory: true,
-                  babalrc: false,
+                  babelrc: false,
                   ...babelOptions,
                 },
               },
@@ -241,12 +244,12 @@ module.exports = (options = {}, env) => {
             use: getStyleLoaders('stylus', false),
           },
 
-          // Images
+          // Images.
           {
             test: /\.(png|jpg|gif|jpeg|bmp)$/,
             use: [
               {
-                loader: require('url-loader'),
+                loader: require.resolve('url-loader'),
                 options: {
                   limit: 8192,
                   name: isProd
@@ -257,11 +260,17 @@ module.exports = (options = {}, env) => {
             ],
           },
 
-          // Others
+          // Others.
           {
+            exclude: [
+              /\.(js|jsx|mjs|ts|tsx|json)$/,
+              /\.(css|scss|sass|stly|stylus)$/,
+              /\.(png|jpg|gif|jpeg|bmp)$/,
+              /\.(html|ejs)$/,
+            ],
             use: [
               {
-                loader: require('file-loader'),
+                loader: require.resolve('file-loader'),
                 options: {
                   name: isProd
                     ? 'assets/other/[name].[hash].[ext]'
@@ -278,34 +287,12 @@ module.exports = (options = {}, env) => {
   // Plugins.
 
   config.plugins = [
-    new webpack.ProgressPlugin(),
-    new CleanWebpackPlugin(),
+    new WebpackBar(),
+    isProd && new CleanWebpackPlugin(),
     isProd &&
-      new WebpackSubresourceIntegrity({
-        hashFuncNames: ['sha256', 'sha512'],
-        enabled: isProd,
-      }),
-    ...pages.map(page => {
-      const { filename, template, title, name } = page;
-      return new HtmlWebpackPlugin({
-        // html-webpack-plugin options.
-        inject: !template,
-        template: template || require('html-webpack-template'),
-        title,
-        filename,
-        hash: isProd,
-        chunks: [name],
-        minify: isProd,
-        meta: {
-          viewport: 'width=device-width, initial-scale=1, shrink-to-fit=no',
-        },
-        // html-webpack-template options.
-        appMountId: 'root',
-        lang: 'en',
-      });
-    }),
+      fs.existsSync(statics) &&
+      new CopyWebpackPlugin([{ from: statics, to: dist }]),
     isDev && new webpack.HotModuleReplacementPlugin(),
-    isProd && new CopyWebpackPlugin([{ from: statics, to: dist }]),
     isProd &&
       new MiniCssExtractPlugin({
         filename: isProd
@@ -316,7 +303,31 @@ module.exports = (options = {}, env) => {
           : 'assets/css/[name].chunk.css',
       }),
     isProd && new OptimizeCssAssetsPlugin(),
-    isProd && new OfflinePlugin(),
+    isProd &&
+      new WebpackSubresourceIntegrity({
+        hashFuncNames: ['sha512'],
+        enabled: isProd,
+      }),
+    ...pages.map(page => {
+      const { filename, template, title, name } = page;
+      return new HtmlWebpackPlugin({
+        // html-webpack-plugin options.
+        inject: !!template,
+        template: template || require('html-webpack-template'),
+        title,
+        filename,
+        hash: isProd,
+        chunks: [`runtime~${name}`, `vendors~${name}`, name],
+        minify: isProd,
+        meta: {
+          viewport: 'width=device-width, initial-scale=1, shrink-to-fit=no',
+        },
+        // html-webpack-template options.
+        appMountId: 'root',
+        lang: 'en',
+      });
+    }),
+    isProd && new ResourceHintWebpackPlugin(),
   ].filter(Boolean);
 
   // Dev server.
