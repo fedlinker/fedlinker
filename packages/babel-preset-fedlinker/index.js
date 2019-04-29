@@ -116,7 +116,6 @@ module.exports = (api, options = {}) => {
             'es.set',
             'es.map',
           ],
-          shippedProposals: proposals === 'all',
           ...options['@babel/preset-env'],
         },
   ]);
