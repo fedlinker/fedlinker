@@ -28,9 +28,9 @@ function normalizeDir(dirName, config, defaultValue) {
     if (path.isAbsolute(config[dirName])) {
       return config[dirName];
     } else {
-      return path.resolve(cwd, config[dirName]);
+      return path.join(cwd, config[dirName]);
     }
   } else {
-    return path.resolve(cwd, defaultValue);
+    return path.join(cwd, defaultValue);
   }
 }

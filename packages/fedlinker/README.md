@@ -2,8 +2,8 @@
 
 Tools for building React project with less configuration as possible.
 
-See [Fedlinker website](https://fedlinker.com/).
+See [Fedlinker website](https://fedlinker.com/) for more information.
 
-## Licenses
+## License
 
-[MIT License](https://github.com/fedlinker/fedlinker/blob/master/MIT-LICENSE) and [Anti 996 License](https://github.com/fedlinker/fedlinker/blob/master/Anti-996-LICENSE).
+[Anti 996 License (反 996 许可证)](./LICENSE).
