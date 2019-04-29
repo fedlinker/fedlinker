@@ -108,7 +108,9 @@ module.exports = config => {
     if (typeof config.pages === 'object') {
       for (let key in config.pages) {
         if (typeof key !== 'string' || !key) {
-          throw new Error('Key in `pages` object shoule be a non-empty string');
+          throw new Error(
+            '`pages` object prop name shoule be a non-empty string'
+          );
         }
         const value = config.pages[key];
         if (

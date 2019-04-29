@@ -312,19 +312,11 @@ module.exports = (options = {}, env) => {
       const { filename, template, title, name } = page;
       return new HtmlWebpackPlugin({
         // html-webpack-plugin options.
-        inject: !!template,
-        template: template || require('html-webpack-template'),
         title,
         filename,
+        template,
         hash: isProd,
         chunks: [`runtime~${name}`, `vendors~${name}`, name],
-        minify: isProd,
-        meta: {
-          viewport: 'width=device-width, initial-scale=1, shrink-to-fit=no',
-        },
-        // html-webpack-template options.
-        appMountId: 'root',
-        lang: 'en',
       });
     }),
     isProd && new ResourceHintWebpackPlugin(),

@@ -80,8 +80,11 @@ module.exports = (config = {}, shouldValidate = true) => {
         }
 
         if (entry == null) entry = path.join(src, name);
-        if (!path.isAbsolute(entry)) entry = path.join(src, entry);
+        if (!path.isAbsolute(entry)) entry = path.join(cwd, entry);
         if (!filename) filename = `${name}.html`;
+        if (!template && !path.isAbsolute(template)) {
+          template = path.join(cwd, template);
+        }
         if (title == null) title = titleCase(name);
 
         result.pages.push({ name, entry, filename, template, title });
