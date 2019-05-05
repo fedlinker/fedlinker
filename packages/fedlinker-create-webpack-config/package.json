@@ -13,7 +13,7 @@
   "author": "李蔚生",
   "homepage": "https://github.com/fedlinker/fedlinker/blob/master/packages/fedlinker-create-webpack-config/README.md",
   "license": "SEE LICENSE IN LICENSE",
-  "main": "index.js",
+  "main": "libs/index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/fedlinker/fedlinker.git"
@@ -25,14 +25,17 @@
     "webpack": "^4.0.0"
   },
   "dependencies": {
+    "@mdx-js/loader": "^1.0.16",
     "babel-loader": "^8.0.5",
     "babel-preset-fedlinker": "^0.0.0",
     "clean-webpack-plugin": "^2.0.1",
     "copy-webpack-plugin": "^5.0.3",
     "css-loader": "^2.1.1",
+    "fedlinker-markdown-loader": "^0.0.0",
     "fedlinker-utils": "^0.0.0",
     "file-loader": "^3.0.1",
     "html-webpack-plugin": "^3.2.0",
+    "html-webpack-template": "^6.2.0",
     "install": "^0.12.2",
     "less-loader": "^4.1.0",
     "mini-css-extract-plugin": "^0.6.0",
@@ -58,6 +61,7 @@
     "less": "^3.9.0",
     "node-sass": "^4.11.0",
     "postcss": "^7.0.14",
+    "react": "^16.8.6",
     "stylus": "^0.54.5",
     "webpack": "^4.30.0"
   }
