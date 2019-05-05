@@ -21,6 +21,7 @@
     "url": "https://github.com/fedlinker/fedlinker/issues"
   },
   "dependencies": {
+    "@hapi/joi": "^15.0.0",
     "title-case": "^2.1.1"
   }
 }
