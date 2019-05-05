@@ -1,33 +1,26 @@
 const path = require('path');
-const cwd = process.cwd();
 const validateAndNormalizeConfig = require('../../libs/validateAndNormalizeConfig');
+const cwd = process.cwd();
 
 describe('fedlinker-utils', () => {
   describe('libs/validateAndNormalizeConfig.js', () => {
-    test('shoule return defaults when no configuration provided', () => {
+    test('shoule return defaults when no configuration is provided', () => {
       expect(validateAndNormalizeConfig()).toMatchObject({
         target: 'web',
+
         flow: false,
         typescript: false,
         proposals: 'minimal',
-        style: true,
-        css: true,
-        less: true,
-        sass: true,
-        stylus: true,
-        postcss: true,
-        markdown: true,
-        mdx: true,
-        image: true,
-        rest: true,
-        thread: require('os').cpus().length > 1,
+
         root: cwd,
         src: path.join(cwd, 'src'),
         dist: path.join(cwd, 'dist'),
         statics: [path.join(cwd, 'statics')],
-        public: '/',
+        productionPublicPath: '/',
+
         shim: true,
         polyfills: [],
+
         pages: [
           {
             name: 'main',
@@ -38,86 +31,57 @@ describe('fedlinker-utils', () => {
             chunks: ['runtime~main', 'vendors~main', 'main'],
           },
         ],
-        sri: true,
-        csp: true,
-        pwa: true,
-        hints: true,
-        host: '0.0.0.0',
-        hmr: true,
-        open: 'index.html',
-        https: false,
-        gzip: true,
       });
     });
 
     test('should return custom config correctly', () => {
+      const root = path.join(cwd, 'root');
+
       expect(
         validateAndNormalizeConfig({
           target: 'lib',
+
           flow: true,
           proposals: ['do-expressions'],
-          css: false,
-          stylus: false,
-          mdx: false,
-          rest: false,
-          thread: true,
+
+          root: root,
           dist: 'dest',
           statics: ['public', 'static'],
-          basename: '/basename',
-          public: '/assets/',
+          productionPublicPath: '/assets/',
+
           shim: false,
           polyfills: ['module-name', './relative-path', '/absolute-path'],
-          sri: {},
-          port: 8080,
         })
       ).toMatchObject({
         target: 'lib',
+
         flow: true,
         typescript: false,
         proposals: ['do-expressions'],
-        style: true,
-        css: false,
-        less: true,
-        sass: true,
-        stylus: false,
-        postcss: true,
-        markdown: true,
-        mdx: false,
-        image: true,
-        rest: false,
-        thread: true,
-        root: cwd,
-        src: path.join(cwd, 'src'),
-        dist: path.join(cwd, 'dest'),
-        statics: [path.join(cwd, 'public'), path.join(cwd, 'static')],
-        basename: '/basename',
-        public: '/assets/',
+
+        root: root,
+        src: path.join(root, 'src'),
+        dist: path.join(root, 'dest'),
+        statics: [path.join(root, 'public'), path.join(root, 'static')],
+        productionPublicPath: '/assets/',
+
         shim: false,
         polyfills: [
           'module-name',
-          path.join(cwd, './relative-path'),
+          path.join(root, './relative-path'),
           '/absolute-path',
         ],
+
         pages: [
           {
             name: 'main',
-            entry: path.join(cwd, 'src'),
+            entry: path.join(root, 'src'),
             title: 'Home',
             filename: 'index.html',
             template: undefined,
             chunks: ['runtime~main', 'vendors~main', 'main'],
           },
         ],
-        sri: {},
-        csp: true,
-        pwa: true,
-        hints: true,
-        host: '0.0.0.0',
-        port: 8080,
-        hmr: true,
-        open: 'index.html',
-        https: false,
-        gzip: true,
       });
     });
 
@@ -127,7 +91,7 @@ describe('fedlinker-utils', () => {
       }).toThrow();
     });
 
-    test('set pages to array', () => {
+    test('could set pages to an array', () => {
       expect(
         validateAndNormalizeConfig({
           pages: [
@@ -137,6 +101,7 @@ describe('fedlinker-utils', () => {
               entry: './src/about',
               title: 'About',
               filename: 'about.html',
+              template: 'template.html',
               other: 'other',
             },
           ],
@@ -156,7 +121,7 @@ describe('fedlinker-utils', () => {
             entry: path.join(cwd, 'src/about'),
             title: 'About',
             filename: 'about.html',
-            template: undefined,
+            template: path.join(cwd, 'template.html'),
             chunks: ['runtime~about', 'vendors~about', 'about'],
             other: 'other',
           },
@@ -164,7 +129,7 @@ describe('fedlinker-utils', () => {
       });
     });
 
-    test('set pages to object', () => {
+    test('could set pages to an object', () => {
       expect(
         validateAndNormalizeConfig({
           pages: {
@@ -173,6 +138,7 @@ describe('fedlinker-utils', () => {
               entry: './src/about',
               title: 'About',
               filename: 'about.html',
+              template: 'template.html',
               other: 'other',
             },
           },
@@ -192,27 +158,11 @@ describe('fedlinker-utils', () => {
             entry: path.join(cwd, 'src/about'),
             title: 'About',
             filename: 'about.html',
-            template: undefined,
+            template: path.join(cwd, 'template.html'),
             chunks: ['runtime~about', 'vendors~about', 'about'],
             other: 'other',
           },
         ],
-      });
-    });
-
-    test('shoule disable all styles when `style` is disabled', () => {
-      expect(
-        validateAndNormalizeConfig({
-          style: false,
-          css: true,
-        })
-      ).toMatchObject({
-        style: false,
-        css: true,
-        less: false,
-        sass: false,
-        stylus: false,
-        postcss: false,
       });
     });
   });
