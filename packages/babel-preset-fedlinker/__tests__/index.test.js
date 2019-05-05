@@ -197,12 +197,10 @@ describe('babel-preset-fedlinker', () => {
       expect(code).toMatchSnapshot();
     });
 
-    test('should not inject default polyfills when disable injectDefaultPolyfills', () => {
+    test('should not inject default polyfills when disable shim', () => {
       const options = {
         babelrc: false,
-        presets: [
-          [preset, { entry: '/entry.js', injectDefaultPolyfills: false }],
-        ],
+        presets: [[preset, { entry: '/entry.js', shim: false }]],
         filename: '/entry.js',
       };
       const { code } = babel.transformSync('', options);

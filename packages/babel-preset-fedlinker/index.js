@@ -61,7 +61,7 @@ module.exports = (api, options = {}) => {
 
     // Inject default polyfills for supporting dynamic import, React and fetch
     // method in lower version browers.
-    injectDefaultPolyfills = true,
+    shim = true,
 
     // Follings are babel-plugin-entry options.
     // Ref: https://github.com/fedlinker/fedlinker/blob/master/packages/babel-plugin-entry/README.md#options
@@ -81,9 +81,7 @@ module.exports = (api, options = {}) => {
 
   // Combine user polyfills and default polyfills
   if (!Array.isArray(polyfills)) polyfills = [polyfills];
-  polyfills = []
-    .concat(injectDefaultPolyfills ? defaultPolyfills : [])
-    .concat(polyfills);
+  polyfills = [].concat(shim ? defaultPolyfills : []).concat(polyfills);
 
   const presets = [];
   const plugins = [];
