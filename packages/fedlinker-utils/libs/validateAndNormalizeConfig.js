@@ -101,6 +101,9 @@ const schema = Joi.object().keys({
     .unique()
     .items(Joi.string())
     .default([]),
+
+  babel: Joi.alternatives().try(Joi.object(), Joi.func()),
+  webpack: Joi.alternatives().try(Joi.object(), Joi.func()),
 });
 
 const NORMALIZED = Symbol('normalized');

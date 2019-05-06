@@ -165,5 +165,23 @@ describe('fedlinker-utils', () => {
         ],
       });
     });
+
+    test('`babel` and `webpack` can be objects', () => {
+      expect(() => {
+        validateAndNormalizeConfig({
+          babel: {},
+          webpack: {},
+        });
+      }).not.toThrow();
+    });
+
+    test('`babel` and `webpack` can be functions', () => {
+      expect(() => {
+        validateAndNormalizeConfig({
+          babel: () => {},
+          webpack: () => {},
+        });
+      }).not.toThrow();
+    });
   });
 });
