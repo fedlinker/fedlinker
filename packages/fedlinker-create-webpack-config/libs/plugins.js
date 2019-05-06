@@ -1,6 +1,6 @@
-const WebpackBar = require('webpackbar');
-const webpack = require('webpack');
 const fs = require('fs');
+const webpack = require('webpack');
+const WebpackBar = require('webpackbar');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
@@ -15,30 +15,29 @@ module.exports = (options, { isProd, isDev }, config) => {
     plugins: [
       new WebpackBar(),
 
-      isProd && new CleanWebpackPlugin(),
+      new CleanWebpackPlugin(),
 
-      isProd &&
-        new CopyWebpackPlugin(
-          statics
-            .map(staticPath => {
-              return fs.existsSync(staticPath) &&
-                fs.statSync(staticPath).isDirectory()
-                ? { from: staticPath, to: dist }
-                : undefined;
-            })
-            .filter(Boolean)
-        ),
+      new CopyWebpackPlugin(
+        statics
+          .map(staticPath => {
+            return fs.existsSync(staticPath) &&
+              fs.statSync(staticPath).isDirectory()
+              ? { from: staticPath, to: dist }
+              : undefined;
+          })
+          .filter(Boolean)
+      ),
 
       isDev && new webpack.HotModuleReplacementPlugin(),
 
       isProd &&
         new MiniCssExtractPlugin({
           filename: isProd
-            ? 'assets/css/[name].[contenthash:8].bundle.css'
-            : 'assets/css/[name].bundle.css',
+            ? 'assets/css/[name].[contenthash:8].css'
+            : 'assets/css/[name].css',
           chunkFilename: isProd
-            ? 'assets/css/[name].[contenthash:8].chunk.css'
-            : 'assets/css/[name].chunk.css',
+            ? 'assets/css/[name].[contenthash:8].css'
+            : 'assets/css/[name].css',
         }),
 
       isProd &&
@@ -57,6 +56,7 @@ module.exports = (options, { isProd, isDev }, config) => {
           chunks,
           ...rest
         } = page;
+
         return new HtmlWebpackPlugin({
           inject: !!template,
           title,

@@ -7,10 +7,7 @@ module.exports = (options = {}, env) => {
   env = env || process.env.NODE_ENV;
 
   if (env !== 'production' && env !== 'development') {
-    throw new Error(
-      'Should set `env` to "production" or "development" when use ' +
-        '`fedlinker-create-webpack-config`'
-    );
+    throw new Error('Should set `env` to "production" or "development"');
   }
 
   const isProd = env === 'production';
@@ -18,17 +15,14 @@ module.exports = (options = {}, env) => {
 
   return fs
     .readdirSync(__dirname)
+    .map(filename => path.join(__dirname, filename))
     .filter(
-      filename =>
-        fs.statSync(path.join(__dirname, filename)).isFile() &&
-        path.extname(filename) === '.js' &&
-        filename !== 'index.js'
+      pathname =>
+        fs.statSync(pathname).isFile() &&
+        path.extname(pathname) === '.js' &&
+        path.basename(pathname) !== 'index.js'
     )
-    .reduce((config, filename) => {
-      return require(path.join(__dirname, filename))(
-        options,
-        { env, isProd, isDev },
-        config
-      );
+    .reduce((config, pathname) => {
+      return require(pathname)(options, { env, isProd, isDev }, config);
     }, {});
 };

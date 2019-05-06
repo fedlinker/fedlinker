@@ -5,18 +5,29 @@ module.exports = (options, { isDev }, config) => {
     ? Object.assign(config, {
         devServer: {
           clientLogLevel: 'none',
+
           compress: true,
-          contentBase: statics,
+
           historyApiFallback: {
             disableDotRule: true,
           },
-          host: '0.0.0.0',
-          hot: true,
-          open: true,
-          openPage: '',
-          overlay: true,
-          port: 8080,
+
           publicPath: '/',
+
+          host: '0.0.0.0',
+
+          port: 8080,
+
+          open: true,
+
+          openPage: '',
+
+          hot: true,
+
+          overlay: true,
+
+          contentBase: statics,
+
           watchContentBase: true,
         },
       })

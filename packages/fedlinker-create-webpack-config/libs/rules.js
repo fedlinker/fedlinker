@@ -20,12 +20,12 @@ module.exports = (options, { isProd, isDev }, config) => {
     return resolve.sync(page.entry, {
       basedir: root,
       extensions: [
-        '.mjs',
-        '.js',
-        '.json',
         '.jsx',
-        typescript && '.ts',
+        '.js',
         typescript && '.tsx',
+        typescript && '.ts',
+        '.json',
+        '.mjs',
       ].filter(Boolean),
     });
   });
