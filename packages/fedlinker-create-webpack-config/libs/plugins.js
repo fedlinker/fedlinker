@@ -6,10 +6,9 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const WebpackSubresourceIntegrity = require('webpack-subresource-integrity');
-const ResourceHintWebpackPlugin = require('resource-hints-webpack-plugin');
 
 module.exports = (options, { isProd, isDev }, config) => {
-  const { dist, statics, pages } = options;
+  const { dist, assets, statics, pages } = options;
 
   return Object.assign(config, {
     plugins: [
@@ -33,11 +32,11 @@ module.exports = (options, { isProd, isDev }, config) => {
       isProd &&
         new MiniCssExtractPlugin({
           filename: isProd
-            ? 'assets/css/[name].[contenthash:8].css'
-            : 'assets/css/[name].css',
+            ? `${assets}css/[name].[contenthash:8].css`
+            : `${assets}css/[name].css`,
           chunkFilename: isProd
-            ? 'assets/css/[name].[contenthash:8].css'
-            : 'assets/css/[name].css',
+            ? `${assets}css/[name].[contenthash:8].css`
+            : `${assets}css/[name].css`,
         }),
 
       isProd &&
@@ -71,8 +70,6 @@ module.exports = (options, { isProd, isDev }, config) => {
           ...rest,
         });
       }),
-
-      isProd && new ResourceHintWebpackPlugin(),
     ].filter(Boolean),
   });
 };

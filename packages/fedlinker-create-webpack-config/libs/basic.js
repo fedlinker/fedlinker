@@ -1,5 +1,13 @@
 module.exports = (options, { env, isProd, isDev }, config) => {
-  const { typescript, root, dist, productionPublicPath, pages } = options;
+  const {
+    typescript,
+    root,
+    dist,
+    assets,
+    productionPublicPath,
+    productionSourceMap,
+    pages,
+  } = options;
 
   const entries = {};
   pages.forEach(page => (entries[page.name] = page.entry));
@@ -15,12 +23,12 @@ module.exports = (options, { env, isProd, isDev }, config) => {
       path: dist,
 
       filename: isProd
-        ? 'assets/js/[name].[contenthash:8].js'
-        : 'assets/js/[name].js',
+        ? `${assets}js/[name].[contenthash:8].js`
+        : `${assets}js/[name].js`,
 
       chunkFilename: isProd
-        ? 'assets/js/[name].[contenthash:8].js'
-        : 'assets/js/[name].js',
+        ? `${assets}js/[name].[contenthash:8].js`
+        : `${assets}js/[name].js`,
 
       publicPath: isProd ? productionPublicPath : '/',
 
@@ -38,11 +46,15 @@ module.exports = (options, { env, isProd, isDev }, config) => {
         typescript && '.ts',
         '.json',
         '.mjs',
-        '.wasm',
       ].filter(Boolean),
     },
 
-    devtool: isDev ? 'cheap-module-eval-source-map' : false,
+    devtool:
+      isProd && productionSourceMap
+        ? 'source-map'
+        : isDev
+        ? 'cheap-module-eval-source-map'
+        : false,
 
     stats: isDev ? 'minimal' : 'normal',
 
