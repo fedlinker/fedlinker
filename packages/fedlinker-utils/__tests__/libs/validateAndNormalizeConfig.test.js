@@ -15,8 +15,24 @@ describe('fedlinker-utils', () => {
         root: cwd,
         src: path.join(cwd, 'src'),
         dist: path.join(cwd, 'dist'),
+        assets: '__assets__/',
         statics: [path.join(cwd, 'statics')],
+
         productionPublicPath: '/',
+        productionSourceMap: false,
+
+        style: true,
+        postcss: true,
+        css: true,
+        less: true,
+        sass: true,
+        stylus: true,
+
+        markdown: true,
+        mdx: true,
+        image: true,
+        other: true,
+        thread: require('os').cpus().length > 1,
 
         shim: true,
         polyfills: [],
@@ -46,8 +62,10 @@ describe('fedlinker-utils', () => {
 
           root: root,
           dist: 'dest',
+          assets: '\\assets',
           statics: ['public', 'static'],
           productionPublicPath: '/assets/',
+          productionSourceMap: true,
 
           shim: false,
           polyfills: ['module-name', './relative-path', '/absolute-path'],
@@ -62,8 +80,10 @@ describe('fedlinker-utils', () => {
         root: root,
         src: path.join(root, 'src'),
         dist: path.join(root, 'dest'),
+        assets: 'assets/',
         statics: [path.join(root, 'public'), path.join(root, 'static')],
         productionPublicPath: '/assets/',
+        productionSourceMap: true,
 
         shim: false,
         polyfills: [
@@ -163,6 +183,57 @@ describe('fedlinker-utils', () => {
             other: 'other',
           },
         ],
+      });
+    });
+
+    test('should disable all styles when disable `style`', () => {
+      expect(validateAndNormalizeConfig({ style: false })).toMatchObject({
+        style: false,
+        postcss: false,
+        css: false,
+        less: false,
+        sass: false,
+        stylus: false,
+      });
+    });
+
+    test('should enable styles separately when disable `style`', () => {
+      expect(
+        validateAndNormalizeConfig({
+          style: false,
+          postcss: true,
+          css: true,
+          less: true,
+          sass: true,
+          stylus: true,
+        })
+      ).toMatchObject({
+        style: false,
+        postcss: true,
+        css: true,
+        less: true,
+        sass: true,
+        stylus: true,
+      });
+    });
+
+    test('styles can be objects', () => {
+      expect(
+        validateAndNormalizeConfig({
+          style: {},
+          postcss: {},
+          css: {},
+          less: {},
+          sass: true,
+          stylus: true,
+        })
+      ).toMatchObject({
+        style: {},
+        postcss: {},
+        css: {},
+        less: {},
+        sass: true,
+        stylus: true,
       });
     });
 

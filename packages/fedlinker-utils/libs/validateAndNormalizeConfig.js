@@ -24,6 +24,19 @@ const schema = Joi.object().keys({
     )
     .default('minimal'),
 
+  style: Joi.alternatives(Joi.boolean(), Joi.object()).default(true),
+  postcss: Joi.alternatives(Joi.boolean(), Joi.object()),
+  css: Joi.alternatives(Joi.boolean(), Joi.object()),
+  less: Joi.alternatives(Joi.boolean(), Joi.object()),
+  sass: Joi.alternatives(Joi.boolean(), Joi.object()),
+  stylus: Joi.alternatives(Joi.boolean(), Joi.object()),
+
+  markdown: Joi.alternatives(Joi.boolean(), Joi.object()).default(true),
+  mdx: Joi.alternatives(Joi.boolean(), Joi.object()).default(true),
+  image: Joi.alternatives(Joi.boolean(), Joi.object()).default(true),
+  other: Joi.alternatives(Joi.boolean(), Joi.object()).default(true),
+  thread: Joi.boolean().default(require('os').cpus().length > 1),
+
   root: Joi.string()
     .trim()
     .absolutePath()
@@ -35,6 +48,9 @@ const schema = Joi.object().keys({
   dist: Joi.string()
     .trim()
     .default('dist'),
+  assets: Joi.string()
+    .trim()
+    .default('__assets__/'),
   statics: Joi.alternatives()
     .try(
       Joi.string().trim(),
@@ -43,10 +59,12 @@ const schema = Joi.object().keys({
         .items(Joi.string().trim())
     )
     .default('statics'),
+
   productionPublicPath: Joi.string()
     .trim()
     .allow('')
     .default('/'),
+  productionSourceMap: Joi.boolean().default(false),
 
   pages: Joi.alternatives().try(
     Joi.array()
@@ -118,32 +136,41 @@ module.exports = (config = {}) => {
 
   const root = result.root;
 
-  // Src.
   if (!path.isAbsolute(result.src)) result.src = path.join(root, result.src);
-
-  // Dist.
   if (!path.isAbsolute(result.dist)) result.dist = path.join(root, result.dist);
-  // `dist` path can't be `root`'s value.
   if (result.dist === root) result.dist = path.join(root, 'dist');
 
-  // Statics.
+  result.assets = result.assets.replace(/\\\\?/, '/');
+  if (result.assets[0] === '/') result.assets = result.assets.slice(1);
+  if (result.assets.length && result.assets[result.assets.length - 1] !== '/') {
+    result.assets = result.assets + '/';
+  }
+
   if (!Array.isArray(result.statics)) result.statics = [result.statics];
   result.statics = result.statics.map(staticPath => {
     const ret = path.isAbsolute(staticPath)
       ? staticPath
       : path.join(root, staticPath);
-    // Static path can't be `root` value.
     return ret === root ? path.join(root, 'statics') : ret;
   });
   result.statics = [...new Set(result.statics)];
 
-  // Polyfills.
   result.polyfills = result.polyfills.map(polyfillPath => {
     return polyfillPath[0] === '.'
       ? path.join(root, polyfillPath)
       : polyfillPath;
   });
   result.polyfills = [...new Set(result.polyfills)];
+
+  // Normalize styles.
+
+  const styleEnabled = !!result.style;
+
+  if (!('postcss' in result)) result.postcss = styleEnabled;
+  if (!('css' in result)) result.css = styleEnabled;
+  if (!('less' in result)) result.less = styleEnabled;
+  if (!('sass' in result)) result.sass = styleEnabled;
+  if (!('stylus' in result)) result.stylus = styleEnabled;
 
   // Normalize pages.
 

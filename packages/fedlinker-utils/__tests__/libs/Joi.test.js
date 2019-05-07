@@ -20,24 +20,5 @@ describe('fedlinker-utils', () => {
       );
       expect(error2).not.toBe(null);
     });
-
-    test('shoule validate basename correctly', () => {
-      const { error, value } = Joi.validate(
-        { basename: '/basename' },
-        {
-          basename: Joi.string().basename(),
-        }
-      );
-      expect(error).toBe(null);
-      expect(value).toEqual({ basename: '/basename' });
-
-      const { error: error2 } = Joi.validate(
-        { basename: 'basename' },
-        {
-          basename: Joi.string().basename(),
-        }
-      );
-      expect(error2).not.toBe(null);
-    });
   });
 });
