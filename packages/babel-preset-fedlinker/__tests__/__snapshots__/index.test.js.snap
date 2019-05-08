@@ -7,6 +7,12 @@ import _possibleConstructorReturn from \\"@babel/runtime-corejs3/helpers/esm/pos
 import _getPrototypeOf from \\"@babel/runtime-corejs3/helpers/esm/getPrototypeOf\\";
 import _inherits from \\"@babel/runtime-corejs3/helpers/esm/inherits\\";
 var _jsxFileName = \\"/index.jsx\\";
+
+(function () {
+  var enterModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).enterModule;
+  enterModule && enterModule(module);
+})();
+
 import React, { Component } from 'react';
 import propTypes from 'prop-types';
 
@@ -36,6 +42,13 @@ function (_Component) {
         __self: this
       }, children);
     }
+  }, {
+    key: \\"__reactstandin__regenerateByEval\\",
+    // @ts-ignore
+    value: function __reactstandin__regenerateByEval(key, code) {
+      // @ts-ignore
+      this[key] = eval(code);
+    }
   }]);
 
   return Button;
@@ -45,7 +58,27 @@ Button.propTypes = {
   disabled: propTypes.bool,
   children: propTypes.node
 };
-export default Button;"
+var _default = Button;
+export default _default;
+;
+
+(function () {
+  var reactHotLoader = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).default;
+
+  if (!reactHotLoader) {
+    return;
+  }
+
+  reactHotLoader.register(Button, \\"Button\\", \\"/index.jsx\\");
+  reactHotLoader.register(_default, \\"default\\", \\"/index.jsx\\");
+})();
+
+;
+
+(function () {
+  var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
+  leaveModule && leaveModule(module);
+})();"
 `;
 
 exports[`babel-preset-fedlinker environment in production 1`] = `
@@ -141,15 +174,16 @@ import \\"core-js/features/array/from\\";
 import \\"core-js/features/symbol\\";
 import \\"core-js/features/set\\";
 import \\"core-js/features/map\\";
-import \\"raf/polyfill\\";
 import \\"whatwg-fetch\\";
 import \\"abortcontroller-polyfill/dist/polyfill-patch-fetch\\";
+import \\"react-hot-loader/patch\\";
 import \\"module-name\\";"
 `;
 
 exports[`babel-preset-fedlinker proposals all proposals 1`] = `
 "import _regeneratorRuntime from \\"@babel/runtime-corejs3/regenerator\\";
 import _Object$defineProperty from \\"@babel/runtime-corejs3/core-js-stable/object/define-property\\";
+import _createClass from \\"@babel/runtime-corejs3/helpers/esm/createClass\\";
 import _classPrivateFieldLooseKey from \\"@babel/runtime-corejs3/helpers/esm/classPrivateFieldLooseKey\\";
 import _skipFirstGeneratorNext from \\"@babel/runtime-corejs3/helpers/esm/skipFirstGeneratorNext\\";
 import \\"regenerator-runtime/runtime\\";
@@ -158,6 +192,11 @@ import _classCallCheck from \\"@babel/runtime-corejs3/helpers/esm/classCallCheck
 import _asyncToGenerator from \\"@babel/runtime-corejs3/helpers/esm/asyncToGenerator\\";
 
 var _class, _class2, _temp, _object$foo, _context, _context2, _a, _a$b, _a$b$c, _param, _partialApplication, _value;
+
+(function () {
+  var enterModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).enterModule;
+  enterModule && enterModule(module);
+})();
 
 function asyncFunction() {
   return _asyncFunction.apply(this, arguments);
@@ -232,14 +271,29 @@ _partialApplication = partialApplication, _param = param, function partialApplic
 };
 var pipelineResult = (_value = \\"value\\", processFunction(_value));
 
-var PrivateMethodClass = function PrivateMethodClass() {
-  _classCallCheck(this, PrivateMethodClass);
+var PrivateMethodClass =
+/*#__PURE__*/
+function () {
+  function PrivateMethodClass() {
+    _classCallCheck(this, PrivateMethodClass);
 
-  _Object$defineProperty(this, _privateProp, {
-    writable: true,
-    value: 'value'
-  });
-};
+    _Object$defineProperty(this, _privateProp, {
+      writable: true,
+      value: 'value'
+    });
+  }
+
+  _createClass(PrivateMethodClass, [{
+    key: \\"__reactstandin__regenerateByEval\\",
+    // @ts-ignore
+    value: function __reactstandin__regenerateByEval(key, code) {
+      // @ts-ignore
+      this[key] = eval(code);
+    }
+  }]);
+
+  return PrivateMethodClass;
+}();
 
 var _privateProp = _classPrivateFieldLooseKey(\\"privateProp\\");
 
@@ -250,7 +304,34 @@ var throwExpression = function (e) {
 import _exportDefaultFrom from 'module-name';
 export { _exportDefaultFrom as exportDefaultFrom };
 import * as _exportNamespaceFrom from 'module-name';
-export { _exportNamespaceFrom as exportNamespaceFrom };"
+export { _exportNamespaceFrom as exportNamespaceFrom };
+;
+
+(function () {
+  var reactHotLoader = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).default;
+
+  if (!reactHotLoader) {
+    return;
+  }
+
+  reactHotLoader.register(asyncFunction, \\"asyncFunction\\", \\"/index.js\\");
+  reactHotLoader.register(Class, \\"Class\\", \\"/index.js\\");
+  reactHotLoader.register(doExpression, \\"doExpression\\", \\"/index.js\\");
+  reactHotLoader.register(nullishCoalescing, \\"nullishCoalescing\\", \\"/index.js\\");
+  reactHotLoader.register(functionSent, \\"functionSent\\", \\"/index.js\\");
+  reactHotLoader.register(numericSeparator, \\"numericSeparator\\", \\"/index.js\\");
+  reactHotLoader.register(optionalChaining, \\"optionalChaining\\", \\"/index.js\\");
+  reactHotLoader.register(pipelineResult, \\"pipelineResult\\", \\"/index.js\\");
+  reactHotLoader.register(PrivateMethodClass, \\"PrivateMethodClass\\", \\"/index.js\\");
+  reactHotLoader.register(throwExpression, \\"throwExpression\\", \\"/index.js\\");
+})();
+
+;
+
+(function () {
+  var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
+  leaveModule && leaveModule(module);
+})();"
 `;
 
 exports[`babel-preset-fedlinker proposals minimal proposals 1`] = `
@@ -258,19 +339,91 @@ exports[`babel-preset-fedlinker proposals minimal proposals 1`] = `
 
 var _class, _class2, _temp;
 
+(function () {
+  var enterModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).enterModule;
+  enterModule && enterModule(module);
+})();
+
 var Class = decorator(_class = (_temp = _class2 = function Class() {
   _classCallCheck(this, Class);
-}, _class2.prop = 'prop', _temp)) || _class;"
+}, _class2.prop = 'prop', _temp)) || _class;
+
+;
+
+(function () {
+  var reactHotLoader = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).default;
+
+  if (!reactHotLoader) {
+    return;
+  }
+
+  reactHotLoader.register(Class, \\"Class\\", \\"/index.js\\");
+})();
+
+;
+
+(function () {
+  var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
+  leaveModule && leaveModule(module);
+})();"
 `;
 
 exports[`babel-preset-fedlinker static type checker transform flow syntax correctly 1`] = `
-"function square(n) {
+"(function () {
+  var enterModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).enterModule;
+  enterModule && enterModule(module);
+})();
+
+function square(n) {
   return n * n;
-}"
+}
+
+;
+
+(function () {
+  var reactHotLoader = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).default;
+
+  if (!reactHotLoader) {
+    return;
+  }
+
+  reactHotLoader.register(square, \\"square\\", \\"/index.js\\");
+})();
+
+;
+
+(function () {
+  var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
+  leaveModule && leaveModule(module);
+})();"
 `;
 
 exports[`babel-preset-fedlinker static type checker transform typescript syntax correctly 1`] = `
-"function identity(arg) {
+"(function () {
+  var enterModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).enterModule;
+  enterModule && enterModule(module);
+})();
+
+function identity(arg) {
   return arg;
-}"
+}
+
+;
+
+(function () {
+  var reactHotLoader = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).default;
+
+  if (!reactHotLoader) {
+    return;
+  }
+
+  reactHotLoader.register(identity, \\"identity\\", \\"/index.ts\\");
+})();
+
+;
+
+(function () {
+  var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
+  leaveModule && leaveModule(module);
+})();"
 `;

@@ -139,6 +139,7 @@ describe('babel-preset-fedlinker', () => {
       const options = {
         babelrc: false,
         presets: [[preset, { proposals: 'minimal' }]],
+        filename: '/index.js',
       };
       const { code } = babel.transformSync(input, options);
       expect(code).toMatchSnapshot();
@@ -180,6 +181,7 @@ describe('babel-preset-fedlinker', () => {
       const options = {
         babelrc: false,
         presets: [[preset, { proposals: 'all' }]],
+        filename: '/index.js',
       };
       const { code } = babel.transformSync(input, options);
       expect(code).toMatchSnapshot();

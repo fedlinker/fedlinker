@@ -2,23 +2,6 @@ const minimalProposals = ['class-properties', 'decorators'];
 // https://babeljs.io/docs/en/plugins#experimental
 const allProposals = require('fedlinker-utils').proposals;
 
-const defaultPolyfills = [
-  // Dynamic import.
-  'core-js/features/array/iterator',
-  'core-js/features/promise',
-  'core-js/features/promise/finally',
-  // React.
-  'core-js/features/object/assign',
-  'core-js/features/array/from',
-  'core-js/features/symbol',
-  'core-js/features/set',
-  'core-js/features/map',
-  'raf/polyfill',
-  // `window.fetch()`.
-  'whatwg-fetch',
-  'abortcontroller-polyfill/dist/polyfill-patch-fetch',
-];
-
 const hasProposal = (proposals, proposal) => {
   if (proposals.includes(proposal)) return true;
   if (proposals.includes(`@babel/plugin-proposal-${proposal}`)) return true;
@@ -78,6 +61,26 @@ module.exports = (api, options = {}) => {
   if (proposals === 'minimal') proposals = minimalProposals;
   else if (proposals === 'all') proposals = allProposals;
   else if (!Array.isArray(proposals)) proposals = [];
+
+  // Default polyfills.
+  const defaultPolyfills = [
+    // Dynamic import.
+    'core-js/features/array/iterator',
+    'core-js/features/promise',
+    'core-js/features/promise/finally',
+    // React.
+    'core-js/features/object/assign',
+    'core-js/features/array/from',
+    'core-js/features/symbol',
+    'core-js/features/set',
+    'core-js/features/map',
+    isTest && 'raf/polyfill',
+    // `window.fetch()`.
+    'whatwg-fetch',
+    'abortcontroller-polyfill/dist/polyfill-patch-fetch',
+    // React hot loader.
+    isDev && 'react-hot-loader/patch',
+  ].filter(Boolean);
 
   // Combine user polyfills and default polyfills
   if (!Array.isArray(polyfills)) polyfills = [polyfills];
@@ -245,6 +248,11 @@ module.exports = (api, options = {}) => {
         ...options['babel-plugin-transform-react-remove-prop-types'],
       },
     ]);
+  }
+
+  // React hot loader in development env.
+  if (isDev) {
+    plugins.push([require.resolve('react-hot-loader/babel')]);
   }
 
   // Overrides for enabling Flow or TypeScript syntax.
